@@ -1,0 +1,198 @@
+/* ═══════════════════════════════════════════════
+   Network Topology — SVG Diagram View
+   ═══════════════════════════════════════════════ */
+
+/* ── Summary bar ── */
+.topo-summary {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 0.85rem 1.25rem;
+  background: rgba(20, 24, 38, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+}
+
+.summary-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.summary-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #e2e8f0;
+  font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+}
+
+.summary-time {
+  font-size: 0.9rem;
+}
+
+.summary-label {
+  font-size: 0.7rem;
+  color: #4a5068;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+}
+
+.summary-divider {
+  width: 1px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* ── Diagrams container ── */
+.topo-diagrams {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ── Diagram wrapper (tooltip anchor) ── */
+.diagram-wrapper {
+  position: relative;
+}
+
+/* ── Scrollable SVG container ── */
+.diagram-scroll {
+  background: rgba(20, 24, 38, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  padding: 0.75rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.diagram-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.diagram-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.diagram-scroll::-webkit-scrollbar-thumb {
+  background: rgba(79, 110, 247, 0.2);
+  border-radius: 3px;
+}
+
+.diagram-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(79, 110, 247, 0.35);
+}
+
+.topology-svg {
+  display: block;
+  min-width: 100%;
+}
+
+/* ═══════════════════════════════════════
+   Node hover effect
+   ═══════════════════════════════════════ */
+.topo-node {
+  cursor: pointer;
+  transition: filter 0.15s;
+}
+
+.topo-node:hover {
+  filter: brightness(1.25) drop-shadow(0 0 12px rgba(79, 110, 247, 0.3)) !important;
+}
+
+/* ═══════════════════════════════════════
+   Tooltip
+   ═══════════════════════════════════════ */
+.topo-tooltip {
+  position: fixed;
+  z-index: 1000;
+  max-width: 340px;
+  padding: 0.75rem 1rem;
+  background: rgba(14, 16, 26, 0.96);
+  border: 1px solid rgba(79, 110, 247, 0.2);
+  border-radius: 10px;
+  backdrop-filter: blur(12px);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(79, 110, 247, 0.08);
+  pointer-events: none;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: #c0c7da;
+}
+
+.tt-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #e2e8f0;
+  margin-bottom: 0.4rem;
+}
+
+.tt-row {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.1rem 0;
+}
+
+.tt-label {
+  color: #4a5068;
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  min-width: 80px;
+  flex-shrink: 0;
+}
+
+.tt-error {
+  color: #e05050;
+}
+
+.tt-sep {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.06);
+  margin: 0.4rem 0;
+}
+
+.tt-time {
+  font-size: 0.72rem;
+  color: #3a3f54;
+}
+
+/* ── Tooltip: device mini-rows ── */
+.tt-dev-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.15rem 0;
+  font-size: 0.78rem;
+}
+
+.tt-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.tt-dot-on {
+  background: #3cc77a;
+}
+
+.tt-dot-off {
+  background: #e05050;
+  opacity: 0.5;
+}
+
+.tt-dev-name {
+  color: #c0c7da;
+  font-weight: 500;
+}
+
+.tt-dev-ip {
+  color: #4a5068;
+  font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+  font-size: 0.72rem;
+  margin-left: auto;
+}
