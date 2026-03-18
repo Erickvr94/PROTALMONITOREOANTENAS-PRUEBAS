@@ -1,0 +1,181 @@
+/* ── Sidebar ── */
+.sidebar {
+  width: 260px;
+  min-height: 100vh;
+  background: #0c0e18;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.sidebar-top {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+/* ── Brand ── */
+.sidebar-brand {
+  padding: 1.5rem 1.25rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.sidebar-logo {
+  width: 130px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 12px rgba(79, 110, 247, 0.1));
+}
+
+/* ── Navigation ── */
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem 0.75rem;
+  gap: 2px;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 8px;
+  color: #7a839e;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background 0.15s, color 0.15s;
+}
+
+.nav-link:hover {
+  background: rgba(79, 110, 247, 0.06);
+  color: #b0b8d0;
+}
+
+.nav-link.active {
+  background: rgba(79, 110, 247, 0.1);
+  color: #4f6ef7;
+}
+
+.nav-icon {
+  font-size: 0.7rem;
+  width: 1.2rem;
+  text-align: center;
+  opacity: 0.7;
+}
+
+.nav-link.active .nav-icon {
+  opacity: 1;
+}
+
+/* ── Section labels ── */
+.nav-section-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #3a3f54;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 1rem 0.75rem 0.4rem;
+}
+
+/* ── Finca groups ── */
+.nav-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  margin-bottom: 0.25rem;
+}
+
+.nav-group-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #c0c7da;
+  padding: 0.5rem 0.75rem 0.25rem;
+}
+
+.nav-link-sub {
+  padding-left: 1.5rem;
+  font-size: 0.82rem;
+}
+
+.badge-soon {
+  margin-left: auto;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 0.15rem 0.45rem;
+  border-radius: 6px;
+  background: rgba(255, 180, 50, 0.12);
+  color: #d4a030;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ── Bottom: User + Logout ── */
+.sidebar-bottom {
+  padding: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sidebar-user {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem;
+}
+
+.user-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #4f6ef7, #3a57e8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.user-name {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #c0c7da;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-role {
+  font-size: 0.7rem;
+  color: #4a5068;
+  text-transform: capitalize;
+}
+
+.logout-btn {
+  width: 100%;
+  padding: 0.5rem;
+  background: rgba(255, 70, 70, 0.08);
+  border: 1px solid rgba(255, 70, 70, 0.12);
+  border-radius: 8px;
+  color: #e05050;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.logout-btn:hover {
+  background: rgba(255, 70, 70, 0.14);
+}

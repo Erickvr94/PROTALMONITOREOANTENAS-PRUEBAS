@@ -1,0 +1,246 @@
+.realtime-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.realtime-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.realtime-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* ── WebSocket status ── */
+.ws-status {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ws-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.ws-connected {
+  background: rgba(50, 200, 120, 0.1);
+  color: #3cc77a;
+}
+.ws-connected .ws-dot {
+  background: #3cc77a;
+  box-shadow: 0 0 6px rgba(60, 199, 122, 0.5);
+}
+
+.ws-connecting {
+  background: rgba(255, 180, 50, 0.1);
+  color: #d4a030;
+}
+.ws-connecting .ws-dot {
+  background: #d4a030;
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+.ws-disconnected {
+  background: rgba(255, 70, 70, 0.1);
+  color: #e05050;
+}
+.ws-disconnected .ws-dot {
+  background: #e05050;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.clear-btn {
+  padding: 0.35rem 0.75rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #7a839e;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.clear-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* ── Sections ── */
+.section-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #c0c7da;
+  margin: 0 0 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.message-count {
+  font-size: 0.7rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 10px;
+  background: rgba(79, 110, 247, 0.1);
+  color: #6b8af7;
+  font-weight: 600;
+}
+
+/* ── Topology ── */
+.topology-section {
+  background: rgba(20, 24, 38, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  padding: 1.25rem;
+}
+
+.topology-container {
+  overflow-x: auto;
+}
+
+.topology-placeholder {
+  padding: 2.5rem;
+  text-align: center;
+  color: #3a3f54;
+  font-size: 0.9rem;
+}
+
+.topology-raw {
+  font-size: 0.8rem;
+  color: #7a839e;
+  white-space: pre-wrap;
+  word-break: break-all;
+  margin: 0;
+}
+
+.topology-tree {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.topology-node {
+  border-left: 2px solid rgba(79, 110, 247, 0.2);
+  padding-left: 1rem;
+}
+
+.topology-node-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0;
+}
+
+.topology-node-key {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #6b8af7;
+}
+
+.topology-node-value {
+  font-size: 0.82rem;
+  color: #7a839e;
+}
+
+.topology-children {
+  padding-left: 0.75rem;
+}
+
+.topology-child {
+  padding: 0.25rem 0;
+}
+
+.topology-device {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  padding: 0.5rem 0.75rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.device-field {
+  font-size: 0.78rem;
+  color: #7a839e;
+}
+
+.field-key {
+  color: #5a6178;
+  font-weight: 500;
+}
+
+/* ── Message log ── */
+.messages-section {
+  background: rgba(20, 24, 38, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  padding: 1.25rem;
+}
+
+.message-log {
+  max-height: 400px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.log-entry {
+  padding: 0.5rem 0.75rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.log-entry pre {
+  font-size: 0.75rem;
+  color: #7a839e;
+  white-space: pre-wrap;
+  word-break: break-all;
+  margin: 0;
+  font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+}
+
+.log-empty {
+  text-align: center;
+  color: #3a3f54;
+  font-size: 0.85rem;
+  padding: 1.5rem;
+  margin: 0;
+}
+
+/* ── Empty state ── */
+.realtime-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  background: rgba(20, 24, 38, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  color: #4a5068;
+  font-size: 0.9rem;
+}

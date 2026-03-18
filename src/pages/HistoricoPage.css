@@ -1,0 +1,35 @@
+.historico-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.historico-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  background: rgba(20, 24, 38, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  text-align: center;
+  gap: 0.5rem;
+}
+
+.placeholder-icon {
+  font-size: 2.5rem;
+  color: #2a2d3a;
+  margin-bottom: 0.5rem;
+}
+
+.historico-placeholder p {
+  margin: 0;
+  color: #5a6178;
+  font-size: 0.9rem;
+}
+
+.placeholder-hint {
+  color: #3a3f54 !important;
+  font-size: 0.8rem !important;
+}
