@@ -6,16 +6,20 @@ interface Props {
 }
 
 export default function DeviceRow({ name, device }: Props) {
-  const isAP = name.startsWith("AP");
-  const isPTP = name.startsWith("PTP");
+  const isAP = name.includes("AP");
+  const isPTP = name.includes("PTP");
 
   return (
-    <div className={`device-row ${device.online ? "dev-online" : "dev-offline"}`}>
+    <div
+      className={`device-row ${device.online ? "dev-online" : "dev-offline"}`}
+    >
       <span className="dev-status-dot" />
       <div className="dev-info">
         <div className="dev-name-line">
-          <span className={`dev-type-badge ${isAP ? "badge-ap" : isPTP ? "badge-ptp" : "badge-other"}`}>
-            {isAP ? "AP" : isPTP ? "PTP" : "DEV"}
+          <span
+            className={`dev-type-badge ${isAP ? "badge-ap" : isPTP ? "badge-ptp" : "badge-other"}`}
+          >
+            {isAP ? "AP" : isPTP ? "PTP" : "Desconocido"}
           </span>
           <span className="dev-name">{name}</span>
           <span className="dev-ip">{device.ip}</span>
@@ -25,9 +29,7 @@ export default function DeviceRow({ name, device }: Props) {
           {device.uptime && (
             <span className="dev-uptime">Up: {device.uptime}</span>
           )}
-          {device.error && (
-            <span className="dev-error">{device.error}</span>
-          )}
+          {device.error && <span className="dev-error">{device.error}</span>}
         </div>
       </div>
     </div>

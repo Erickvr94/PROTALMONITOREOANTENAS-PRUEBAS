@@ -59,20 +59,52 @@ export const EMPTY_STATE: NetworkState = {
   timestamp: null,
 };
 
+/**
+ * If a gateway is offline, force all devices in its sectors to offline too.
+ * This overrides potentially contradictory SNMP data from the backend.
+ */
+function enforceGatewayOffline(next: NetworkState): NetworkState {
+  let patched = false;
+  const dispositivos = { ...next.dispositivos };
+
+  for (const gw of Object.values(next.gateways)) {
+    if (gw.online) continue;
+
+    for (const sector of gw.sectores) {
+      const devices = dispositivos[sector];
+      if (!devices) continue;
+
+      for (const [name, dev] of Object.entries(devices)) {
+        if (dev.online) {
+          if (!patched) {
+            patched = true;
+          }
+          dispositivos[sector] = {
+            ...dispositivos[sector],
+            [name]: { ...dev, online: false },
+          };
+        }
+      }
+    }
+  }
+
+  return patched ? { ...next, dispositivos } : next;
+}
+
 export function reduceNetwork(
   state: NetworkState,
   msg: WsMessage,
 ): NetworkState {
+  let next: NetworkState;
+
   if (msg.tipo === "estado_completo") {
-    return {
+    next = {
       gateways: msg.gateways,
       dispositivos: msg.dispositivos,
       timestamp: msg.timestamp,
     };
-  }
-
-  if (msg.tipo === "gateway_update") {
-    return {
+  } else if (msg.tipo === "gateway_update") {
+    next = {
       ...state,
       gateways: {
         ...state.gateways,
@@ -85,7 +117,9 @@ export function reduceNetwork(
         },
       },
     };
+  } else {
+    return state;
   }
 
-  return state;
+  return enforceGatewayOffline(next);
 }

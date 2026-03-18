@@ -104,9 +104,7 @@ function TreeLines({
   return (
     <g stroke={LINE_COLOR} strokeWidth={LINE_W} fill="none">
       <line x1={parentX} y1={parentBottomY} x2={parentX} y2={midY} />
-      {childXs.length > 1 && (
-        <line x1={minX} y1={midY} x2={maxX} y2={midY} />
-      )}
+      {childXs.length > 1 && <line x1={minX} y1={midY} x2={maxX} y2={midY} />}
       {childXs.map((cx, i) => (
         <line key={i} x1={cx} y1={midY} x2={cx} y2={childTopY} />
       ))}
@@ -148,13 +146,30 @@ function GatewayIcon({
 
   const tip = (
     <div>
-      <div className="tt-title">Gateway {id} — {online ? "Online" : "Offline"}</div>
-      <div className="tt-row"><span className="tt-label">IP</span>{ip}</div>
-      <div className="tt-row"><span className="tt-label">Sectores</span>{sectores}</div>
+      <div className="tt-title">
+        Gateway {id} — {online ? "Online" : "Offline"}
+      </div>
+      <div className="tt-row">
+        <span className="tt-label">IP</span>
+        {ip}
+      </div>
+      <div className="tt-row">
+        <span className="tt-label">Sectores</span>
+        {sectores}
+      </div>
       <div className="tt-sep" />
-      <div className="tt-row"><span className="tt-label">Paquetes</span>{p.recibidos}/{p.enviados} recibidos</div>
-      <div className="tt-row"><span className="tt-label">Perdida</span>{p.porcentajePerdida}%</div>
-      <div className="tt-row"><span className="tt-label">Latencia</span>{p.tiempoPromedio !== null ? `${p.tiempoPromedio}ms` : "Timeout"}</div>
+      <div className="tt-row">
+        <span className="tt-label">Paquetes</span>
+        {p.recibidos}/{p.enviados} recibidos
+      </div>
+      <div className="tt-row">
+        <span className="tt-label">Perdida</span>
+        {p.porcentajePerdida}%
+      </div>
+      <div className="tt-row">
+        <span className="tt-label">Latencia</span>
+        {p.tiempoPromedio !== null ? `${p.tiempoPromedio}ms` : "Timeout"}
+      </div>
       <div className="tt-sep" />
       <div className="tt-time">{fmtTime(gateway.ultimaActualizacion)}</div>
     </div>
@@ -169,29 +184,93 @@ function GatewayIcon({
       onPointerLeave={onLeave}
     >
       {/* Body */}
-      <rect x={-48} y={-26} width={96} height={52} rx={10} fill={fill} stroke={stroke} strokeWidth={2} />
+      <rect
+        x={-48}
+        y={-26}
+        width={96}
+        height={52}
+        rx={10}
+        fill={fill}
+        stroke={stroke}
+        strokeWidth={2}
+      />
       {/* Antennas */}
-      <line x1={-16} y1={-26} x2={-26} y2={-56} stroke={stroke} strokeWidth={2.5} strokeLinecap="round" />
-      <line x1={16} y1={-26} x2={26} y2={-56} stroke={stroke} strokeWidth={2.5} strokeLinecap="round" />
+      <line
+        x1={-16}
+        y1={-26}
+        x2={-26}
+        y2={-56}
+        stroke={stroke}
+        strokeWidth={2.5}
+        strokeLinecap="round"
+      />
+      <line
+        x1={16}
+        y1={-26}
+        x2={26}
+        y2={-56}
+        stroke={stroke}
+        strokeWidth={2.5}
+        strokeLinecap="round"
+      />
       <circle cx={-26} cy={-58} r={4} fill={stroke} />
       <circle cx={26} cy={-58} r={4} fill={stroke} />
       {/* Signal arcs */}
-      <path d="M-7,-62 A 11,11 0 0,1 7,-62" fill="none" stroke={stroke} strokeWidth={1.8} opacity={0.6} />
-      <path d="M-14,-68 A 20,20 0 0,1 14,-68" fill="none" stroke={stroke} strokeWidth={1.8} opacity={0.35} />
+      <path
+        d="M-7,-62 A 11,11 0 0,1 7,-62"
+        fill="none"
+        stroke={stroke}
+        strokeWidth={1.8}
+        opacity={0.6}
+      />
+      <path
+        d="M-14,-68 A 20,20 0 0,1 14,-68"
+        fill="none"
+        stroke={stroke}
+        strokeWidth={1.8}
+        opacity={0.35}
+      />
       {/* Port LEDs */}
       {[-24, -12, 0, 12, 24].map((px) => (
-        <rect key={px} x={px - 3.5} y={7} width={7} height={10} rx={2} fill={stroke} opacity={online ? 0.6 : 0.2} />
+        <rect
+          key={px}
+          x={px - 3.5}
+          y={7}
+          width={7}
+          height={10}
+          rx={2}
+          fill={stroke}
+          opacity={online ? 0.6 : 0.2}
+        />
       ))}
       {/* Status LED */}
       <circle cx={0} cy={-5} r={5} fill={stroke} opacity={0.85} />
       {/* Labels */}
-      <text y={46} textAnchor="middle" fill="#c0c7da" fontSize={18} fontWeight={700}>
+      <text
+        y={46}
+        textAnchor="middle"
+        fill="#c0c7da"
+        fontSize={18}
+        fontWeight={700}
+      >
         Gateway {id}
       </text>
-      <text y={66} textAnchor="middle" fill="#6b8af7" fontSize={15} fontFamily="monospace">
+      <text
+        y={66}
+        textAnchor="middle"
+        fill="#6b8af7"
+        fontSize={15}
+        fontFamily="monospace"
+      >
         {ip}
       </text>
-      <text y={84} textAnchor="middle" fill={online ? "#3cc77a" : "#e05050"} fontSize={13} fontWeight={600}>
+      <text
+        y={84}
+        textAnchor="middle"
+        fill={online ? "#3cc77a" : "#e05050"}
+        fontSize={13}
+        fontWeight={600}
+      >
         {online ? "Online" : "Offline"}
         <tspan fill="#4a5068" fontWeight={400}>
           {" · "}
@@ -252,24 +331,61 @@ function SectorIcon({
       onPointerLeave={onLeave}
     >
       {/* Body */}
-      <rect x={-56} y={-22} width={112} height={44} rx={7} fill="#141826" stroke="rgba(79,110,247,0.25)" strokeWidth={1.5} />
+      <rect
+        x={-56}
+        y={-22}
+        width={112}
+        height={44}
+        rx={7}
+        fill="#141826"
+        stroke="rgba(79,110,247,0.25)"
+        strokeWidth={1.5}
+      />
       {/* Antenna */}
-      <line x1={0} y1={-22} x2={0} y2={-42} stroke={accent} strokeWidth={2} strokeLinecap="round" />
+      <line
+        x1={0}
+        y1={-22}
+        x2={0}
+        y2={-42}
+        stroke={accent}
+        strokeWidth={2}
+        strokeLinecap="round"
+      />
       <circle cx={0} cy={-44} r={3.5} fill={accent} />
       {/* Signal arcs */}
-      <path d="M-6,-48 A 8,8 0 0,1 6,-48" fill="none" stroke={accent} strokeWidth={1.2} opacity={0.5} />
+      <path
+        d="M-6,-48 A 8,8 0 0,1 6,-48"
+        fill="none"
+        stroke={accent}
+        strokeWidth={1.2}
+        opacity={0.5}
+      />
       {/* Port dots */}
       {[-32, -16, 0, 16, 32].map((px) => (
         <circle key={px} cx={px} cy={3} r={3.5} fill={accent} opacity={0.4} />
       ))}
       {/* LED */}
-      <circle cx={46} cy={-10} r={4} fill={hasOnline ? "#3cc77a" : "#e05050"} opacity={0.75} />
+      <circle
+        cx={46}
+        cy={-10}
+        r={4}
+        fill={hasOnline ? "#3cc77a" : "#e05050"}
+        opacity={0.75}
+      />
       {/* Labels */}
-      <text y={40} textAnchor="middle" fill="#c0c7da" fontSize={16} fontWeight={600}>
+      <text
+        y={40}
+        textAnchor="middle"
+        fill="#c0c7da"
+        fontSize={16}
+        fontWeight={600}
+      >
         {name}
       </text>
       <text y={58} textAnchor="middle" fontSize={13}>
-        <tspan fill={hasOnline ? "#3cc77a" : "#e05050"} fontWeight={600}>{onlineCount}</tspan>
+        <tspan fill={hasOnline ? "#3cc77a" : "#e05050"} fontWeight={600}>
+          {onlineCount}
+        </tspan>
         <tspan fill="#4a5068">/{totalCount} dispositivos</tspan>
       </text>
     </g>
@@ -294,20 +410,37 @@ function DeviceIcon({
   const online = device.online;
   const fill = online ? "#0f2118" : "#1a1318";
   const stroke = online ? "#3cc77a" : "rgba(224,80,80,0.4)";
-  const isAP = name.startsWith("AP");
-  const isPTP = name.startsWith("PTP");
+  const isAP = name.includes("AP");
+  const isPTP = name.includes("PTP");
 
   const tip = (
     <div>
-      <div className="tt-title">{name} — {online ? "Online" : "Offline"}</div>
-      <div className="tt-row"><span className="tt-label">IP</span>{device.ip}</div>
-      <div className="tt-row"><span className="tt-label">Ubicacion</span>{device.ubicacion}</div>
-      <div className="tt-row"><span className="tt-label">Tipo</span>{isAP ? "Access Point" : isPTP ? "Point-to-Point" : "Dispositivo"}</div>
+      <div className="tt-title">
+        {name} — {online ? "Online" : "Offline"}
+      </div>
+      <div className="tt-row">
+        <span className="tt-label">IP</span>
+        {device.ip}
+      </div>
+      <div className="tt-row">
+        <span className="tt-label">Ubicacion</span>
+        {device.ubicacion}
+      </div>
+      <div className="tt-row">
+        <span className="tt-label">Tipo</span>
+        {isAP ? "Access Point" : isPTP ? "Punto a punto" : "Dispositivo"}
+      </div>
       {device.uptime && (
-        <div className="tt-row"><span className="tt-label">Uptime</span>{device.uptime}</div>
+        <div className="tt-row">
+          <span className="tt-label">Uptime</span>
+          {device.uptime}
+        </div>
       )}
       {device.error && (
-        <div className="tt-row tt-error"><span className="tt-label">Error</span>{device.error}</div>
+        <div className="tt-row tt-error">
+          <span className="tt-label">Error</span>
+          {device.error}
+        </div>
       )}
       <div className="tt-sep" />
       <div className="tt-time">{fmtTime(device.ultimaActualizacion)}</div>
@@ -322,22 +455,63 @@ function DeviceIcon({
       onPointerLeave={onLeave}
     >
       {/* Body */}
-      <rect x={-30} y={-20} width={60} height={40} rx={7} fill={fill} stroke={stroke} strokeWidth={1.5} />
+      <rect
+        x={-30}
+        y={-20}
+        width={60}
+        height={40}
+        rx={7}
+        fill={fill}
+        stroke={stroke}
+        strokeWidth={1.5}
+      />
       {/* Antenna */}
-      <line x1={0} y1={-20} x2={0} y2={-36} stroke={stroke} strokeWidth={2} strokeLinecap="round" />
+      <line
+        x1={0}
+        y1={-20}
+        x2={0}
+        y2={-36}
+        stroke={stroke}
+        strokeWidth={2}
+        strokeLinecap="round"
+      />
       <circle cx={0} cy={-38} r={3} fill={stroke} />
       {/* Type badge */}
-      <text y={4} textAnchor="middle" fill={isAP ? "#6b8af7" : isPTP ? "#b080f0" : "#7a839e"} fontSize={13} fontWeight={700}>
+      <text
+        y={4}
+        textAnchor="middle"
+        fill={isAP ? "#6b8af7" : isPTP ? "#b080f0" : "#7a839e"}
+        fontSize={13}
+        fontWeight={700}
+      >
         {isAP ? "AP" : isPTP ? "PTP" : "DEV"}
       </text>
       {/* Status LED */}
-      <circle cx={21} cy={-11} r={3.5} fill={online ? "#3cc77a" : "#e05050"} opacity={online ? 0.9 : 0.5} />
+      <circle
+        cx={21}
+        cy={-11}
+        r={3.5}
+        fill={online ? "#3cc77a" : "#e05050"}
+        opacity={online ? 0.9 : 0.5}
+      />
       {/* Name */}
-      <text y={34} textAnchor="middle" fill="#c0c7da" fontSize={12} fontWeight={600}>
+      <text
+        y={34}
+        textAnchor="middle"
+        fill="#c0c7da"
+        fontSize={12}
+        fontWeight={600}
+      >
         {truncate(name, 18)}
       </text>
       {/* IP */}
-      <text y={50} textAnchor="middle" fill="#6b8af7" fontSize={11} fontFamily="monospace">
+      <text
+        y={50}
+        textAnchor="middle"
+        fill="#6b8af7"
+        fontSize={11}
+        fontFamily="monospace"
+      >
         {device.ip}
       </text>
       {/* Location */}
@@ -345,7 +519,14 @@ function DeviceIcon({
         {truncate(device.ubicacion, 20)}
       </text>
       {/* Status text */}
-      <text y={79} textAnchor="middle" fill={online ? "#3cc77a" : "#e05050"} fontSize={10} fontWeight={500} opacity={0.8}>
+      <text
+        y={79}
+        textAnchor="middle"
+        fill={online ? "#3cc77a" : "#e05050"}
+        fontSize={10}
+        fontWeight={500}
+        opacity={0.8}
+      >
         {online ? "Online" : "Offline"}
       </text>
     </g>
@@ -355,7 +536,11 @@ function DeviceIcon({
 /* ═══════════════════════════════════════
    Main component
    ═══════════════════════════════════════ */
-export default function TopologyDiagram({ gwId, gateway, sectorDevices }: Props) {
+export default function TopologyDiagram({
+  gwId,
+  gateway,
+  sectorDevices,
+}: Props) {
   const { svgW, gwX, sectors } = useLayout(gateway, sectorDevices);
   const [tooltip, setTooltip] = useState<TooltipData | null>(null);
 
@@ -377,7 +562,10 @@ export default function TopologyDiagram({ gwId, gateway, sectorDevices }: Props)
           viewBox={`0 0 ${svgW} ${SVG_H}`}
           className="topology-svg"
           onPointerMove={(e) => {
-            if (tooltip) setTooltip((t) => t ? { ...t, x: e.clientX, y: e.clientY } : null);
+            if (tooltip)
+              setTooltip((t) =>
+                t ? { ...t, x: e.clientX, y: e.clientY } : null,
+              );
           }}
         >
           {/* ── Lines: Gateway → Sectors ── */}
