@@ -1,5 +1,5 @@
 const SANTA_PRISCILA_WS =
-  import.meta.env.SANTA_PRISCILA_WS ?? "ws://localhost:3000";
+  import.meta.env.VITE_SANTA_PRISCILA_WS ?? "ws://localhost:3000";
 
 export interface Finca {
   id: string;
