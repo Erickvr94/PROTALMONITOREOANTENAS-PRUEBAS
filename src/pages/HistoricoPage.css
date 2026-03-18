@@ -4,32 +4,200 @@
   gap: 1.5rem;
 }
 
-.historico-placeholder {
+.historico-header {
   display: flex;
-  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* ── Toolbar ── */
+.historico-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.65rem 1rem;
+  background: rgba(20, 24, 38, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  flex-wrap: wrap;
+}
+
+.toolbar-modes {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.toolbar-btn {
+  padding: 0.4rem 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  background: transparent;
+  color: #6a7190;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.toolbar-btn:hover {
+  background: rgba(79, 110, 247, 0.08);
+  color: #8fa4f8;
+}
+
+.toolbar-btn-active {
+  background: rgba(79, 110, 247, 0.15);
+  border-color: rgba(79, 110, 247, 0.3);
+  color: #8fa4f8;
+}
+
+.date-input {
+  padding: 0.4rem 0.65rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  background: rgba(14, 16, 26, 0.6);
+  color: #c0c7da;
+  font-size: 0.8rem;
+  font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+  outline: none;
+  color-scheme: dark;
+}
+
+.date-input:focus {
+  border-color: rgba(79, 110, 247, 0.4);
+}
+
+.toolbar-count {
+  margin-left: auto;
+  font-size: 0.78rem;
+  color: #4a5068;
+  font-weight: 600;
+}
+
+/* ── Error / Empty ── */
+.historico-error {
+  padding: 0.75rem 1rem;
+  background: rgba(224, 80, 80, 0.1);
+  border: 1px solid rgba(224, 80, 80, 0.2);
+  border-radius: 10px;
+  color: #e05050;
+  font-size: 0.85rem;
+}
+
+.historico-empty {
+  display: flex;
   align-items: center;
   justify-content: center;
   padding: 4rem 2rem;
   background: rgba(20, 24, 38, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 14px;
-  text-align: center;
-  gap: 0.5rem;
-}
-
-.placeholder-icon {
-  font-size: 2.5rem;
-  color: #2a2d3a;
-  margin-bottom: 0.5rem;
-}
-
-.historico-placeholder p {
-  margin: 0;
-  color: #5a6178;
+  color: #4a5068;
   font-size: 0.9rem;
 }
 
-.placeholder-hint {
-  color: #3a3f54 !important;
-  font-size: 0.8rem !important;
+/* ── Body: timeline + view ── */
+.historico-body {
+  display: flex;
+  gap: 1rem;
+  min-height: 0;
+}
+
+/* ── Timeline sidebar ── */
+.historico-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: 240px;
+  flex-shrink: 0;
+  max-height: 720px;
+  overflow-y: auto;
+  padding-right: 0.35rem;
+}
+
+.historico-timeline::-webkit-scrollbar {
+  width: 5px;
+}
+
+.historico-timeline::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.historico-timeline::-webkit-scrollbar-thumb {
+  background: rgba(79, 110, 247, 0.15);
+  border-radius: 3px;
+}
+
+.timeline-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 8px;
+  background: rgba(20, 24, 38, 0.4);
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: left;
+  color: inherit;
+  font: inherit;
+}
+
+.timeline-item:hover {
+  background: rgba(79, 110, 247, 0.06);
+  border-color: rgba(79, 110, 247, 0.12);
+}
+
+.timeline-item-active {
+  background: rgba(79, 110, 247, 0.1);
+  border-color: rgba(79, 110, 247, 0.25);
+}
+
+.timeline-time {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #c0c7da;
+  font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+}
+
+.timeline-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  color: #4a5068;
+  font-weight: 600;
+}
+
+.timeline-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dot-ok {
+  background: #3cc77a;
+}
+
+.dot-warn {
+  background: #e05050;
+}
+
+/* ── Topology view area ── */
+.historico-view {
+  flex: 1;
+  min-width: 0;
+}
+
+.historico-view-header {
+  margin-bottom: 0.75rem;
+}
+
+.view-timestamp {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #6a7190;
+  font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
 }

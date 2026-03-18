@@ -39,6 +39,9 @@ export default function Sidebar() {
               >
                 <span className="nav-icon">&#9776;</span>
                 Historico
+                {!finca.hasHistorico && (
+                  <span className="badge-soon">Pronto</span>
+                )}
               </NavLink>
             </div>
           ))}
