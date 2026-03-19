@@ -252,15 +252,11 @@ export default function TendenciasPage() {
         </div>
 
         {data && (
-          <span className="toolbar-count">
-            {data.totalRegistros} muestras
-          </span>
+          <span className="toolbar-count">{data.totalRegistros} muestras</span>
         )}
       </div>
 
-      {loading && (
-        <div className="tendencias-empty">Cargando...</div>
-      )}
+      {loading && <div className="tendencias-empty">Cargando...</div>}
       {error && <div className="tendencias-error">{error}</div>}
 
       {!loading && data && rows.length === 0 && (
@@ -281,17 +277,16 @@ export default function TendenciasPage() {
                   <th>ID</th>
                   <th>IP</th>
                   <th>Sectores</th>
-                  <th>Caidas</th>
-                  <th>Muestras</th>
-                  <th>% Caida</th>
-                  <th>Estado</th>
+                  <th className="col-num">Caidas</th>
+                  <th className="col-num">Muestras</th>
+                  <th className="col-num">% Caida</th>
+                  <th className="col-estado">Estado</th>
                 </tr>
               </thead>
               <tbody>
                 {Object.entries(data.gateways).map(([id, gw]) => {
                   const isSelected =
-                    selectedRow !== null &&
-                    selectedRow.nombre === `GW-${id}`;
+                    selectedRow !== null && selectedRow.nombre === `GW-${id}`;
                   return (
                     <tr
                       key={`gw-${id}`}
@@ -314,7 +309,7 @@ export default function TendenciasPage() {
                       <td className="col-num">{gw.caidasCount}</td>
                       <td className="col-num">{gw.totalMuestras}</td>
                       <td className="col-num">{gw.porcentajeCaida}%</td>
-                      <td>
+                      <td className="col-estado">
                         <span
                           className={`status-badge ${statusClass(gw.porcentajeCaida)}`}
                         >
@@ -337,10 +332,10 @@ export default function TendenciasPage() {
                       <th>Dispositivo</th>
                       <th>IP</th>
                       <th>Ubicacion</th>
-                      <th>Caidas</th>
-                      <th>Muestras</th>
-                      <th>% Caida</th>
-                      <th>Estado</th>
+                      <th className="col-num">Caidas</th>
+                      <th className="col-num">Muestras</th>
+                      <th className="col-num">% Caida</th>
+                      <th className="col-estado">Estado</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -372,7 +367,7 @@ export default function TendenciasPage() {
                             <td className="col-num">{d.caidasCount}</td>
                             <td className="col-num">{d.totalMuestras}</td>
                             <td className="col-num">{d.porcentajeCaida}%</td>
-                            <td>
+                            <td className="col-estado">
                               <span
                                 className={`status-badge ${statusClass(d.porcentajeCaida)}`}
                               >

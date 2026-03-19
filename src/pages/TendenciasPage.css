@@ -91,6 +91,7 @@
   width: 100%;
   border-collapse: collapse;
   font-size: 0.8rem;
+  table-layout: fixed;
 }
 
 .tendencias-table th {
@@ -106,6 +107,14 @@
   top: 0;
   background: #0f1117;
   z-index: 1;
+}
+
+.tendencias-table th.col-num {
+  text-align: right;
+}
+
+.tendencias-table th.col-estado {
+  text-align: right;
 }
 
 .tendencias-table td {
@@ -143,6 +152,10 @@
 }
 
 /* ── Status badges ── */
+.tendencias-table .col-estado {
+  text-align: right;
+}
+
 .status-badge {
   display: inline-block;
   padding: 0.15rem 0.5rem;
