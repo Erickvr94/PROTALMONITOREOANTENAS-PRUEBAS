@@ -240,7 +240,7 @@ function PieChart({
             dominantBaseline="central"
             className="pie-pct-text"
           >
-            {caida === 100 ? "100%" : "0%"}
+            {caida === 100 ? "0%" : "100%"}
           </text>
           <text
             x={cx}
@@ -249,14 +249,14 @@ function PieChart({
             dominantBaseline="central"
             className="pie-sub-text"
           >
-            {caida === 100 ? "caida" : "activo"}
+            activa
           </text>
         </svg>
         <div className="pie-label">{label}</div>
         <div className="pie-legend">
           <span className="legend-item">
             <span className="legend-dot" style={{ background: "#3cc77a" }} />
-            Activo {activo.toFixed(1)}%
+            Activa {activo.toFixed(1)}%
           </span>
           <span className="legend-item">
             <span className="legend-dot" style={{ background: "#e05050" }} />
@@ -295,7 +295,7 @@ function PieChart({
           dominantBaseline="central"
           className="pie-pct-text"
         >
-          {caida.toFixed(1)}%
+          {activo.toFixed(1)}%
         </text>
         <text
           x={cx}
@@ -304,14 +304,14 @@ function PieChart({
           dominantBaseline="central"
           className="pie-sub-text"
         >
-          caida
+          activa
         </text>
       </svg>
       <div className="pie-label">{label}</div>
       <div className="pie-legend">
         <span className="legend-item">
           <span className="legend-dot" style={{ background: "#3cc77a" }} />
-          Activo {activo.toFixed(1)}%
+          Activa {activo.toFixed(1)}%
         </span>
         <span className="legend-item">
           <span className="legend-dot" style={{ background: "#e05050" }} />
@@ -501,15 +501,13 @@ export default function TendenciasPage() {
 
             {selectedRow && (
               <div className="charts-row">
-                {/* Pie chart: only in fecha mode */}
-                {modo === "fecha" && (
-                  <div className="chart-card">
-                    <PieChart
-                      porcentajeCaida={selectedRow.porcentajeCaida}
-                      label={`${selectedRow.nombre} (${selectedRow.sector})`}
-                    />
-                  </div>
-                )}
+                {/* Pie chart */}
+                <div className="chart-card">
+                  <PieChart
+                    porcentajeCaida={selectedRow.porcentajeCaida}
+                    label={`${selectedRow.nombre} (${selectedRow.sector})`}
+                  />
+                </div>
 
                 {/* Bar chart */}
                 {barData.length > 0 && (
@@ -518,8 +516,8 @@ export default function TendenciasPage() {
                       data={barData}
                       label={
                         modo === "fecha"
-                          ? `% Activo - Ultimos 7 dias`
-                          : `% Activo - ${fechaInicio} a ${fechaFin}`
+                          ? `% Activa - Ultimos 7 dias`
+                          : `% Activa - ${fechaInicio} a ${fechaFin}`
                       }
                     />
                   </div>
