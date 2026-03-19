@@ -6,6 +6,7 @@ export interface Finca {
   name: string;
   wsUrl: string | null;
   hasHistorico: boolean;
+  hasTendencias: boolean;
 }
 
 export const FINCAS: Finca[] = [
@@ -14,12 +15,14 @@ export const FINCAS: Finca[] = [
     name: "IPSP",
     wsUrl: SANTA_PRISCILA_WS,
     hasHistorico: true,
+    hasTendencias: true,
   },
   {
     id: "naturisa",
     name: "Naturisa",
     wsUrl: null,
     hasHistorico: false,
+    hasTendencias: false,
   },
 ];
 

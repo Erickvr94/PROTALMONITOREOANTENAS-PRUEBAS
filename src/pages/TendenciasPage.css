@@ -1,0 +1,295 @@
+.tendencias-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.tendencias-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* ── Toolbar (reuse historico patterns) ── */
+.tendencias-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.65rem 1rem;
+  background: rgba(20, 24, 38, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  flex-wrap: wrap;
+}
+
+/* ── Error / Empty ── */
+.tendencias-error {
+  padding: 0.75rem 1rem;
+  background: rgba(224, 80, 80, 0.1);
+  border: 1px solid rgba(224, 80, 80, 0.2);
+  border-radius: 10px;
+  color: #e05050;
+  font-size: 0.85rem;
+}
+
+.tendencias-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  background: rgba(20, 24, 38, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  color: #4a5068;
+  font-size: 0.9rem;
+}
+
+/* ── Body: table + chart ── */
+.tendencias-body {
+  display: flex;
+  gap: 1.5rem;
+  min-height: 0;
+}
+
+/* ── Table area ── */
+.tendencias-table-wrap {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 75vh;
+  overflow-y: auto;
+  padding-right: 0.35rem;
+}
+
+.tendencias-table-wrap::-webkit-scrollbar {
+  width: 5px;
+}
+
+.tendencias-table-wrap::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tendencias-table-wrap::-webkit-scrollbar-thumb {
+  background: rgba(79, 110, 247, 0.15);
+  border-radius: 3px;
+}
+
+.section-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #4f6ef7;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.8rem 0 0.3rem;
+}
+
+.tendencias-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+.tendencias-table th {
+  text-align: left;
+  padding: 0.5rem 0.6rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #3a3f54;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  position: sticky;
+  top: 0;
+  background: #0f1117;
+  z-index: 1;
+}
+
+.tendencias-table td {
+  padding: 0.5rem 0.6rem;
+  color: #b0b8d0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.table-row-clickable {
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.table-row-clickable:hover {
+  background: rgba(79, 110, 247, 0.06);
+}
+
+.table-row-active {
+  background: rgba(79, 110, 247, 0.1) !important;
+}
+
+.table-row-active td {
+  color: #d0d7ea;
+}
+
+.col-mono {
+  font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+  font-size: 0.78rem;
+}
+
+.col-num {
+  text-align: right;
+  font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+  font-size: 0.78rem;
+}
+
+/* ── Status badges ── */
+.status-badge {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.status-ok {
+  background: rgba(60, 199, 122, 0.12);
+  color: #3cc77a;
+}
+
+.status-warn {
+  background: rgba(255, 180, 50, 0.12);
+  color: #d4a030;
+}
+
+.status-danger {
+  background: rgba(224, 130, 50, 0.12);
+  color: #e08232;
+}
+
+.status-critical {
+  background: rgba(224, 80, 80, 0.12);
+  color: #e05050;
+}
+
+/* ── Pie chart panel ── */
+.tendencias-chart {
+  width: 280px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: rgba(20, 24, 38, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  align-self: flex-start;
+  position: sticky;
+  top: 1rem;
+}
+
+.pie-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.pie-svg {
+  width: 200px;
+  height: 200px;
+  filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.3));
+}
+
+.pie-pct-text {
+  fill: #e8ecf4;
+  font-size: 22px;
+  font-weight: 800;
+  font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+}
+
+.pie-sub-text {
+  fill: #6a7190;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.pie-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #c0c7da;
+  text-align: center;
+  word-break: break-word;
+}
+
+.pie-legend {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  color: #6a7190;
+  font-weight: 600;
+}
+
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.chart-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 3rem 1rem;
+  color: #3a3f54;
+  font-size: 0.82rem;
+  text-align: center;
+}
+
+.chart-placeholder-icon {
+  font-size: 2.5rem;
+  opacity: 0.3;
+}
+
+/* ── Detail card below pie ── */
+.chart-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.detail-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #4a5068;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.detail-value {
+  font-size: 0.78rem;
+  color: #b0b8d0;
+  font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+  text-align: right;
+  word-break: break-all;
+}

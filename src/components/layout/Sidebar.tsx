@@ -43,6 +43,16 @@ export default function Sidebar() {
                   <span className="badge-soon">Pronto</span>
                 )}
               </NavLink>
+              <NavLink
+                to={`/dashboard/${finca.id}/tendencias`}
+                className="nav-link nav-link-sub"
+              >
+                <span className="nav-icon">&#9650;</span>
+                Tendencias
+                {!finca.hasTendencias && (
+                  <span className="badge-soon">Pronto</span>
+                )}
+              </NavLink>
             </div>
           ))}
         </nav>
