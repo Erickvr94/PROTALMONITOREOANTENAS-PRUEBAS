@@ -41,9 +41,15 @@ export default function DashboardHome() {
               </Link>
               <Link
                 to={`/dashboard/${finca.id}/historico`}
-                className="finca-link"
+                className={`finca-link ${!finca.hasHistorico ? "finca-link-disabled" : ""}`}
               >
                 Historico
+              </Link>
+              <Link
+                to={`/dashboard/${finca.id}/tendencias`}
+                className={`finca-link ${!finca.hasTendencias ? "finca-link-disabled" : ""}`}
+              >
+                Tendencias
               </Link>
             </div>
           </div>
