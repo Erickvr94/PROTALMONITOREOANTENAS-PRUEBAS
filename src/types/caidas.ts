@@ -20,3 +20,16 @@ export interface CaidasResponse {
   gateways: Record<string, GatewayCaida>;
   dispositivos: Record<string, Record<string, DispositivoCaida>>;
 }
+
+export interface CaidasDia {
+  fecha: string;
+  totalRegistros: number;
+  gateways: Record<string, GatewayCaida>;
+  dispositivos: Record<string, Record<string, DispositivoCaida>>;
+}
+
+export interface CaidasRangoResponse {
+  fechaInicio: string;
+  fechaFin: string;
+  dias: CaidasDia[];
+}

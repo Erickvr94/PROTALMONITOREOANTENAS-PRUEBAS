@@ -46,11 +46,35 @@
   font-size: 0.9rem;
 }
 
-/* ── Body: table + chart ── */
-.tendencias-body {
+/* ── Charts area (above table) ── */
+.tendencias-charts {
+  background: rgba(20, 24, 38, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  padding: 1.25rem;
+}
+
+.charts-row {
   display: flex;
-  gap: 1.5rem;
-  min-height: 0;
+  gap: 1.25rem;
+  align-items: stretch;
+  flex-wrap: wrap;
+}
+
+.chart-card {
+  background: rgba(14, 16, 26, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.chart-card-grow {
+  flex: 1;
+  min-width: 280px;
+}
+
+.chart-card-details {
+  min-width: 200px;
 }
 
 /* ── Table area ── */
@@ -185,21 +209,7 @@
   color: #e05050;
 }
 
-/* ── Pie chart panel ── */
-.tendencias-chart {
-  width: 280px;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 1.25rem;
-  background: rgba(20, 24, 38, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 14px;
-  align-self: flex-start;
-  position: sticky;
-  top: 1rem;
-}
+/* ── (removed side panel — charts are now above table) ── */
 
 .pie-container {
   display: flex;
@@ -273,6 +283,90 @@
 .chart-placeholder-icon {
   font-size: 2.5rem;
   opacity: 0.3;
+}
+
+/* ── Bar chart ── */
+.bar-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.bar-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #4f6ef7;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-align: center;
+}
+
+.bar-scroll {
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+}
+
+.bar-scroll::-webkit-scrollbar {
+  height: 4px;
+}
+
+.bar-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.bar-scroll::-webkit-scrollbar-thumb {
+  background: rgba(79, 110, 247, 0.15);
+  border-radius: 3px;
+}
+
+.bar-svg {
+  display: block;
+  height: 180px;
+}
+
+.bar-grid-label {
+  fill: #3a3f54;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+}
+
+.bar-value-label {
+  fill: #c0c7da;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+}
+
+.bar-date-label {
+  fill: #6a7190;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+}
+
+/* ── Date range in toolbar ── */
+.toolbar-date-range {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.date-range-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #4a5068;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ── Table date note (rango mode) ── */
+.table-date-note {
+  font-size: 0.78rem;
+  color: #6a7190;
+  font-weight: 600;
+  padding: 0.25rem 0;
+  font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
 }
 
 /* ── Detail card below pie ── */
