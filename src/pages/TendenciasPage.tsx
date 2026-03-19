@@ -118,7 +118,7 @@ function BarChart({ data, label }: { data: BarDataPoint[]; label: string }) {
         <svg
           viewBox={`0 0 ${totalWidth} ${totalHeight}`}
           className="bar-svg"
-          style={{ width: totalWidth, minWidth: "100%" }}
+          style={{ width: Math.max(totalWidth, 240), height: totalHeight }}
         >
           {/* Grid lines */}
           {[0, 25, 50, 75, 100].map((v) => {

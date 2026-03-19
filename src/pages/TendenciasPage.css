@@ -304,6 +304,8 @@
 .bar-scroll {
   overflow-x: auto;
   padding-bottom: 0.25rem;
+  display: flex;
+  justify-content: center;
 }
 
 .bar-scroll::-webkit-scrollbar {
@@ -321,7 +323,6 @@
 
 .bar-svg {
   display: block;
-  height: 180px;
 }
 
 .bar-grid-label {
