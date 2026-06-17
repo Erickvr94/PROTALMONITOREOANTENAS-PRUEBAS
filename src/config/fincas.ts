@@ -2,7 +2,7 @@ const SANTA_PRISCILA_WS =
   import.meta.env.VITE_SANTA_PRISCILA_WS ?? "ws://localhost:8080/ws/ipsp";
 
 const NATURISA_WS =
-  import.meta.env.VITE_SANTA_PRISCILA_WS ?? "ws://localhost:8080/ws/ipsp";
+  import.meta.env.VITE_NATURISA_WS ?? "ws://localhost:8080/ws/naturisa";
 
 export interface Finca {
   id: string;
