@@ -23,7 +23,7 @@ export const FINCAS: Finca[] = [
   {
     id: "naturisa",
     name: "Naturisa",
-    wsUrl: NATURISA_WS,
+    wsUrl: null,
     hasHistorico: false,
     hasTendencias: false,
   },
