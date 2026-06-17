@@ -8,10 +8,10 @@ export interface HistorialRecord {
   dispositivos: Record<string, Record<string, DeviceState>>;
 }
 
-export function fetchUltimaHora(): Promise<HistorialRecord[]> {
-  return apiFetch<HistorialRecord[]>("/api/historial/ultima-hora");
+export function fetchUltimaHora(fincaId: string): Promise<HistorialRecord[]> {
+  return apiFetch<HistorialRecord[]>(`/api/${fincaId}/historial/ultima-hora`);
 }
 
-export function fetchPorFecha(fecha: string): Promise<HistorialRecord[]> {
-  return apiFetch<HistorialRecord[]>(`/api/historial/fecha/${fecha}`);
+export function fetchPorFecha(fincaId: string, fecha: string): Promise<HistorialRecord[]> {
+  return apiFetch<HistorialRecord[]>(`/api/${fincaId}/historial/fecha/${fecha}`);
 }

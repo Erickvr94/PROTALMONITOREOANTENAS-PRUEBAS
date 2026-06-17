@@ -350,9 +350,9 @@ export default function TendenciasPage() {
       let res: CaidasRangoResponse;
       if (modo === "fecha") {
         const inicio = daysAgo(fecha, 6);
-        res = await fetchCaidasRango(inicio, fecha);
+        res = await fetchCaidasRango(finca!.id, inicio, fecha);
       } else {
-        res = await fetchCaidasRango(fechaInicio, fechaFin);
+        res = await fetchCaidasRango(finca!.id, fechaInicio, fechaFin);
       }
       setRangeData(res);
     } catch (e) {

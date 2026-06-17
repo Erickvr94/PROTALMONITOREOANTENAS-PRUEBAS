@@ -35,8 +35,8 @@ export default function HistoricoPage() {
     try {
       const data =
         modo === "ultima-hora"
-          ? await fetchUltimaHora()
-          : await fetchPorFecha(fecha);
+          ? await fetchUltimaHora(fincaId!)
+          : await fetchPorFecha(fincaId!, fecha);
       setRecords(data);
       setSelectedIdx(data.length > 0 ? data.length - 1 : 0);
     } catch (e) {
@@ -45,7 +45,7 @@ export default function HistoricoPage() {
     } finally {
       setLoading(false);
     }
-  }, [modo, fecha]);
+  }, [fincaId, modo, fecha]);
 
   useEffect(() => {
     if (finca) load();
