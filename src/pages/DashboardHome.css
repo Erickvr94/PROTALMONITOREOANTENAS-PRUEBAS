@@ -15,43 +15,92 @@
   margin: 0.25rem 0 2rem;
 }
 
-/* ── Finca cards ── */
-.finca-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  gap: 1.25rem;
+/* ── Empresa cards ── */
+.empresa-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
-.finca-card {
+.empresa-card {
   background: rgba(20, 24, 38, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 14px;
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  overflow: hidden;
 }
 
-.finca-card-header {
+.empresa-card-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.finca-card-name {
+.empresa-card-name {
   font-size: 1.15rem;
-  font-weight: 600;
+  font-weight: 700;
   color: #e2e8f0;
   margin: 0;
 }
 
-.finca-status {
-  font-size: 0.7rem;
+.empresa-finca-count {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #4a5068;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
+  padding: 0.2rem 0.65rem;
+}
+
+.empresa-card-empty {
+  padding: 1.25rem 1.5rem;
+  font-size: 0.85rem;
+  color: #4a5068;
+  font-style: italic;
+}
+
+/* ── Finca list within empresa card ── */
+.finca-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.finca-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  gap: 1rem;
+}
+
+.finca-row:last-child {
+  border-bottom: none;
+}
+
+.finca-row-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.finca-row-name {
+  font-size: 0.9rem;
   font-weight: 600;
-  padding: 0.2rem 0.6rem;
+  color: #c0c7da;
+}
+
+.finca-status {
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
   border-radius: 20px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  flex-shrink: 0;
 }
 
 .status-active {
@@ -64,30 +113,23 @@
   color: #d4a030;
 }
 
-.finca-desc {
-  font-size: 0.85rem;
-  color: #5a6178;
-  margin: 0;
-  line-height: 1.5;
-}
-
-.finca-card-actions {
+.finca-row-actions {
   display: flex;
-  gap: 0.6rem;
+  gap: 0.5rem;
+  flex-shrink: 0;
 }
 
 .finca-link {
-  flex: 1;
-  text-align: center;
-  padding: 0.55rem 1rem;
-  border-radius: 8px;
+  padding: 0.4rem 0.85rem;
+  border-radius: 7px;
   background: rgba(79, 110, 247, 0.08);
   border: 1px solid rgba(79, 110, 247, 0.15);
   color: #6b8af7;
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 500;
   text-decoration: none;
   transition: background 0.15s;
+  white-space: nowrap;
 }
 
 .finca-link:hover {
@@ -95,6 +137,6 @@
 }
 
 .finca-link-disabled {
-  opacity: 0.4;
+  opacity: 0.35;
   pointer-events: none;
 }

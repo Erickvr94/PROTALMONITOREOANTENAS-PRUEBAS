@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useParams, Navigate } from "react-router-dom";
-import { getFinca } from "../config/fincas";
+import { getFinca } from "../config/empresas";
 import {
   fetchUltimaHora,
   fetchPorFecha,
@@ -19,8 +19,11 @@ function toLocalDate(d: Date): string {
 }
 
 export default function HistoricoPage() {
-  const { fincaId } = useParams<{ fincaId: string }>();
-  const finca = getFinca(fincaId ?? "");
+  const { empresaId, fincaId } = useParams<{
+    empresaId: string;
+    fincaId: string;
+  }>();
+  const finca = getFinca(empresaId ?? "", fincaId ?? "");
 
   const [modo, setModo] = useState<Modo>("ultima-hora");
   const [fecha, setFecha] = useState(toLocalDate(new Date()));
@@ -35,8 +38,8 @@ export default function HistoricoPage() {
     try {
       const data =
         modo === "ultima-hora"
-          ? await fetchUltimaHora(fincaId!)
-          : await fetchPorFecha(fincaId!, fecha);
+          ? await fetchUltimaHora(empresaId!, fincaId!)
+          : await fetchPorFecha(empresaId!, fincaId!, fecha);
       setRecords(data);
       setSelectedIdx(data.length > 0 ? data.length - 1 : 0);
     } catch (e) {
@@ -45,7 +48,7 @@ export default function HistoricoPage() {
     } finally {
       setLoading(false);
     }
-  }, [fincaId, modo, fecha]);
+  }, [empresaId, fincaId, modo, fecha]);
 
   useEffect(() => {
     if (finca) load();
@@ -77,10 +80,10 @@ export default function HistoricoPage() {
 
   // Count summaries for timeline items
   function countOnline(rec: HistorialRecord) {
-    const gwEntries = Object.values(rec.gateways);
+    const gwEntries = Object.values(rec.gateways ?? {});
     const gwOn = gwEntries.filter((g) => g.online).length;
-    const allDevs = Object.values(rec.dispositivos).flatMap((s) =>
-      Object.values(s),
+    const allDevs = Object.values(rec.dispositivos ?? {}).flatMap((s) =>
+      Object.values(s ?? {}),
     );
     const devOn = allDevs.filter((d) => d.online).length;
     return { gwOn, gwTotal: gwEntries.length, devOn, devTotal: allDevs.length };

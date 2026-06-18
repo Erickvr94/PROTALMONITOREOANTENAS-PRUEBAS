@@ -67,7 +67,7 @@ function enforceGatewayOffline(next: NetworkState): NetworkState {
   let patched = false;
   const dispositivos = { ...next.dispositivos };
 
-  for (const gw of Object.values(next.gateways)) {
+  for (const gw of Object.values(next.gateways ?? {})) {
     if (gw.online) continue;
 
     for (const sector of gw.sectores) {
@@ -99,8 +99,8 @@ export function reduceNetwork(
 
   if (msg.tipo === "estado_completo") {
     next = {
-      gateways: msg.gateways,
-      dispositivos: msg.dispositivos,
+      gateways: msg.gateways ?? {},
+      dispositivos: msg.dispositivos ?? {},
       timestamp: msg.timestamp,
     };
   } else if (msg.tipo === "gateway_update") {

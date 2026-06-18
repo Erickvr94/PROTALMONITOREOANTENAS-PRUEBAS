@@ -8,14 +8,19 @@ const SLOT_W = 140;
 const SECTOR_GAP = 48;
 const PAD_X = 56;
 
+// With gateway (3 levels)
 const GW_Y = 100;
 const SECTOR_Y = 340;
 const DEVICE_Y = 575;
-
 const MID_GW = 220;
 const MID_SECTOR = 458;
-
 const SVG_H = 720;
+
+// Without gateway (2 levels)
+const SECTOR_Y_FLAT = 100;
+const DEVICE_Y_FLAT = 330;
+const MID_SECTOR_FLAT = 215;
+const SVG_H_FLAT = 480;
 
 const LINE_COLOR = "rgba(79, 110, 247, 0.25)";
 const LINE_W = 2;
@@ -37,8 +42,8 @@ interface TooltipData {
 }
 
 interface Props {
-  gwId: string;
-  gateway: GatewayState;
+  gwId?: string;
+  gateway?: GatewayState;
   sectorDevices: Record<string, Record<string, DeviceState>>;
 }
 
@@ -46,14 +51,19 @@ interface Props {
    Layout calculation
    ═══════════════════════════════════════ */
 function useLayout(
-  gateway: GatewayState,
+  gateway: GatewayState | undefined,
   sectorDevices: Record<string, Record<string, DeviceState>>,
 ) {
   return useMemo(() => {
     let cursor = PAD_X;
     const sectors: SectorLayout[] = [];
 
-    for (const sName of gateway.sectores) {
+    // Use gateway.sectores when available; fall back to all keys in sectorDevices
+    const sectorNames = gateway
+      ? gateway.sectores
+      : Object.keys(sectorDevices);
+
+    for (const sName of sectorNames) {
       const devEntries = Object.entries(sectorDevices[sName] ?? {});
       const numSlots = Math.max(devEntries.length, 1);
       const groupW = numSlots * SLOT_W;
@@ -553,13 +563,19 @@ export default function TopologyDiagram({
 
   const handleLeave = useCallback(() => setTooltip(null), []);
 
+  // Pick Y positions based on whether we have a gateway
+  const sectorY  = gateway ? SECTOR_Y      : SECTOR_Y_FLAT;
+  const deviceY  = gateway ? DEVICE_Y      : DEVICE_Y_FLAT;
+  const midSect  = gateway ? MID_SECTOR    : MID_SECTOR_FLAT;
+  const svgH     = gateway ? SVG_H         : SVG_H_FLAT;
+
   return (
     <div className="diagram-wrapper">
       <div className="diagram-scroll">
         <svg
           width={svgW}
-          height={SVG_H}
-          viewBox={`0 0 ${svgW} ${SVG_H}`}
+          height={svgH}
+          viewBox={`0 0 ${svgW} ${svgH}`}
           className="topology-svg"
           onPointerMove={(e) => {
             if (tooltip)
@@ -568,45 +584,49 @@ export default function TopologyDiagram({
               );
           }}
         >
-          {/* ── Lines: Gateway → Sectors ── */}
-          <TreeLines
-            parentX={gwX}
-            parentBottomY={GW_Y + 32}
-            midY={MID_GW}
-            childXs={sectors.map((s) => s.centerX)}
-            childTopY={SECTOR_Y - 48}
-          />
+          {/* ── Lines: Gateway → Sectors (solo cuando hay gateway) ── */}
+          {gateway && (
+            <TreeLines
+              parentX={gwX}
+              parentBottomY={GW_Y + 32}
+              midY={MID_GW}
+              childXs={sectors.map((s) => s.centerX)}
+              childTopY={sectorY - 48}
+            />
+          )}
 
           {/* ── Lines: Sectors → Devices ── */}
           {sectors.map((s) => (
             <TreeLines
               key={s.name}
               parentX={s.centerX}
-              parentBottomY={SECTOR_Y + 26}
-              midY={MID_SECTOR}
+              parentBottomY={sectorY + 26}
+              midY={midSect}
               childXs={s.devices.map((d) => d.x)}
-              childTopY={DEVICE_Y - 42}
+              childTopY={deviceY - 42}
             />
           ))}
 
-          {/* ── Gateway ── */}
-          <GatewayIcon
-            x={gwX}
-            y={GW_Y}
-            online={gateway.online}
-            id={gwId}
-            ip={gateway.ip}
-            gateway={gateway}
-            onHover={handleHover}
-            onLeave={handleLeave}
-          />
+          {/* ── Gateway (solo cuando existe) ── */}
+          {gateway && gwId !== undefined && (
+            <GatewayIcon
+              x={gwX}
+              y={GW_Y}
+              online={gateway.online}
+              id={gwId}
+              ip={gateway.ip}
+              gateway={gateway}
+              onHover={handleHover}
+              onLeave={handleLeave}
+            />
+          )}
 
           {/* ── Sectors ── */}
           {sectors.map((s) => (
             <SectorIcon
               key={s.name}
               x={s.centerX}
-              y={SECTOR_Y}
+              y={sectorY}
               name={s.name}
               onlineCount={s.onlineCount}
               totalCount={s.devices.length}
@@ -622,7 +642,7 @@ export default function TopologyDiagram({
               <DeviceIcon
                 key={`${s.name}-${d.name}`}
                 x={d.x}
-                y={DEVICE_Y}
+                y={deviceY}
                 name={d.name}
                 device={d.dev}
                 onHover={handleHover}

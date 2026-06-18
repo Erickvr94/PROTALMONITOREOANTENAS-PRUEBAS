@@ -1,6 +1,6 @@
 import { useRef, useCallback } from "react";
 import { useParams, Navigate } from "react-router-dom";
-import { getFinca } from "../config/fincas";
+import { getFinca } from "../config/empresas";
 import { useWebSocket, type WsStatus } from "../hooks/useWebSocket";
 import NetworkTopology from "../components/topology/NetworkTopology";
 import {
@@ -18,8 +18,11 @@ const STATUS_LABELS: Record<WsStatus, string> = {
 };
 
 export default function RealtimePage() {
-  const { fincaId } = useParams<{ fincaId: string }>();
-  const finca = getFinca(fincaId ?? "");
+  const { empresaId, fincaId } = useParams<{
+    empresaId: string;
+    fincaId: string;
+  }>();
+  const finca = getFinca(empresaId ?? "", fincaId ?? "");
   const networkRef = useRef<NetworkState>(EMPTY_STATE);
 
   const onMessage = useCallback((raw: unknown) => {
@@ -29,12 +32,16 @@ export default function RealtimePage() {
     }
   }, []);
 
-  const { status } = useWebSocket(finca?.wsUrl ?? null, onMessage);
+  const { status } = useWebSocket(finca?.wsUrl ?? null, onMessage, finca?.id);
 
   if (!finca) return <Navigate to="/dashboard" replace />;
 
   const network = networkRef.current;
-  const hasData = Object.keys(network.gateways).length > 0;
+  const hasData =
+    Object.keys(network.gateways).length > 0 ||
+    Object.values(network.dispositivos).some(
+      (sector) => Object.keys(sector ?? {}).length > 0,
+    );
 
   return (
     <div className="realtime-page">

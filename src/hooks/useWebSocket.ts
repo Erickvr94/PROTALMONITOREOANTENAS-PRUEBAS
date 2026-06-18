@@ -7,6 +7,7 @@ const RECONNECT_DELAY = 3000;
 export function useWebSocket(
   url: string | null,
   onMessage?: (data: unknown) => void,
+  fincaId?: string,
 ) {
   const [status, setStatus] = useState<WsStatus>("disconnected");
   const [tick, setTick] = useState(0);
@@ -35,6 +36,9 @@ export function useWebSocket(
 
       ws.onopen = () => {
         if (closed) return;
+        if (fincaId) {
+          ws.send(JSON.stringify({ accion: "suscribir", finca: fincaId }));
+        }
         setStatus("connected");
       };
 
@@ -69,7 +73,7 @@ export function useWebSocket(
       clearTimeout(reconnectTimer.current);
       wsRef.current?.close();
     };
-  }, [url]);
+  }, [url, fincaId]);
 
   return { status, send, tick };
 }

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useParams, Navigate } from "react-router-dom";
-import { getFinca } from "../config/fincas";
+import { getFinca } from "../config/empresas";
 import { fetchCaidasRango } from "../services/caidas";
 import type {
   CaidasDia,
@@ -327,8 +327,11 @@ function PieChart({
 type Modo = "fecha" | "rango";
 
 export default function TendenciasPage() {
-  const { fincaId } = useParams<{ fincaId: string }>();
-  const finca = getFinca(fincaId ?? "");
+  const { empresaId, fincaId } = useParams<{
+    empresaId: string;
+    fincaId: string;
+  }>();
+  const finca = getFinca(empresaId ?? "", fincaId ?? "");
 
   const [modo, setModo] = useState<Modo>("fecha");
   const [fecha, setFecha] = useState(toLocalDate(new Date()));
@@ -350,9 +353,9 @@ export default function TendenciasPage() {
       let res: CaidasRangoResponse;
       if (modo === "fecha") {
         const inicio = daysAgo(fecha, 6);
-        res = await fetchCaidasRango(finca!.id, inicio, fecha);
+        res = await fetchCaidasRango(empresaId!, finca!.id, inicio, fecha);
       } else {
-        res = await fetchCaidasRango(finca!.id, fechaInicio, fechaFin);
+        res = await fetchCaidasRango(empresaId!, finca!.id, fechaInicio, fechaFin);
       }
       setRangeData(res);
     } catch (e) {

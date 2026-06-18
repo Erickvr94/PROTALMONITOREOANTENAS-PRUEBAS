@@ -1,11 +1,35 @@
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { FINCAS } from "../../config/fincas";
+import { EMPRESAS } from "../../config/empresas";
 import { useAuth } from "../../context/AuthContext";
 import logo from "../../assets/logomelacorp.png";
 import "./Sidebar.css";
 
 export default function Sidebar() {
   const { user, logout } = useAuth();
+
+  const [empresasAbiertas, setEmpresasAbiertas] = useState<Set<string>>(
+    () => new Set(EMPRESAS.map((e) => e.id)),
+  );
+  const [fincasAbiertas, setFincasAbiertas] = useState<Set<string>>(
+    () => new Set(),
+  );
+
+  function toggleEmpresa(id: string) {
+    setEmpresasAbiertas((prev) => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+  }
+
+  function toggleFinca(key: string) {
+    setFincasAbiertas((prev) => {
+      const next = new Set(prev);
+      next.has(key) ? next.delete(key) : next.add(key);
+      return next;
+    });
+  }
 
   return (
     <aside className="sidebar">
@@ -20,41 +44,88 @@ export default function Sidebar() {
             Dashboard
           </NavLink>
 
-          <div className="nav-section-label">Fincas</div>
+          <div className="nav-section-label">Empresas</div>
 
-          {FINCAS.map((finca) => (
-            <div key={finca.id} className="nav-group">
-              <div className="nav-group-title">{finca.name}</div>
-              <NavLink
-                to={`/dashboard/${finca.id}/realtime`}
-                className="nav-link nav-link-sub"
-              >
-                <span className="nav-icon">&#9673;</span>
-                Tiempo Real
-                {!finca.wsUrl && <span className="badge-soon">Pronto</span>}
-              </NavLink>
-              <NavLink
-                to={`/dashboard/${finca.id}/historico`}
-                className="nav-link nav-link-sub"
-              >
-                <span className="nav-icon">&#9776;</span>
-                Historico
-                {!finca.hasHistorico && (
-                  <span className="badge-soon">Pronto</span>
+          {EMPRESAS.map((empresa) => {
+            const empresaAbierta = empresasAbiertas.has(empresa.id);
+            return (
+              <div key={empresa.id} className="nav-empresa">
+                <button
+                  className="nav-empresa-btn"
+                  onClick={() => toggleEmpresa(empresa.id)}
+                >
+                  <span className="nav-empresa-arrow">
+                    {empresaAbierta ? "▾" : "▸"}
+                  </span>
+                  {empresa.name}
+                  {empresa.fincas.length === 0 && (
+                    <span className="badge-soon">Sin fincas</span>
+                  )}
+                </button>
+
+                {empresaAbierta && (
+                  <div className="nav-fincas">
+                    {empresa.fincas.length === 0 ? (
+                      <span className="nav-empty">Sin fincas configuradas</span>
+                    ) : (
+                      empresa.fincas.map((finca) => {
+                        const fincaKey = `${empresa.id}/${finca.id}`;
+                        const fincaAbierta = fincasAbiertas.has(fincaKey);
+                        return (
+                          <div key={finca.id} className="nav-finca">
+                            <button
+                              className="nav-finca-btn"
+                              onClick={() => toggleFinca(fincaKey)}
+                            >
+                              <span className="nav-finca-arrow">
+                                {fincaAbierta ? "▾" : "▸"}
+                              </span>
+                              {finca.name}
+                            </button>
+
+                            {fincaAbierta && (
+                              <div className="nav-finca-links">
+                                <NavLink
+                                  to={`/dashboard/${empresa.id}/${finca.id}/realtime`}
+                                  className="nav-link nav-link-sub"
+                                >
+                                  <span className="nav-icon">&#9673;</span>
+                                  Tiempo Real
+                                  {!finca.wsUrl && (
+                                    <span className="badge-soon">Pronto</span>
+                                  )}
+                                </NavLink>
+                                <NavLink
+                                  to={`/dashboard/${empresa.id}/${finca.id}/historico`}
+                                  className="nav-link nav-link-sub"
+                                >
+                                  <span className="nav-icon">&#9776;</span>
+                                  Historico
+                                  {!finca.hasHistorico && (
+                                    <span className="badge-soon">Pronto</span>
+                                  )}
+                                </NavLink>
+                                <NavLink
+                                  to={`/dashboard/${empresa.id}/${finca.id}/tendencias`}
+                                  className="nav-link nav-link-sub"
+                                >
+                                  <span className="nav-icon">&#9650;</span>
+                                  Tendencias
+                                  {!finca.hasTendencias && (
+                                    <span className="badge-soon">Pronto</span>
+                                  )}
+                                </NavLink>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })
+                    )}
+                  </div>
                 )}
-              </NavLink>
-              <NavLink
-                to={`/dashboard/${finca.id}/tendencias`}
-                className="nav-link nav-link-sub"
-              >
-                <span className="nav-icon">&#9650;</span>
-                Tendencias
-                {!finca.hasTendencias && (
-                  <span className="badge-soon">Pronto</span>
-                )}
-              </NavLink>
-            </div>
-          ))}
+              </div>
+            );
+          })}
         </nav>
       </div>
 

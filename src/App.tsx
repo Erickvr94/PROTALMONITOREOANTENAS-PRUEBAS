@@ -7,6 +7,7 @@ import DashboardHome from "./pages/DashboardHome";
 import RealtimePage from "./pages/RealtimePage";
 import HistoricoPage from "./pages/HistoricoPage";
 import TendenciasPage from "./pages/TendenciasPage";
+import EmpresaPage from "./pages/EmpresaPage";
 
 function App() {
   return (
@@ -24,9 +25,10 @@ function App() {
             }
           >
             <Route index element={<DashboardHome />} />
-            <Route path=":fincaId/realtime" element={<RealtimePage />} />
-            <Route path=":fincaId/historico" element={<HistoricoPage />} />
-            <Route path=":fincaId/tendencias" element={<TendenciasPage />} />
+            <Route path=":empresaId" element={<EmpresaPage />} />
+            <Route path=":empresaId/:fincaId/realtime" element={<RealtimePage />} />
+            <Route path=":empresaId/:fincaId/historico" element={<HistoricoPage />} />
+            <Route path=":empresaId/:fincaId/tendencias" element={<TendenciasPage />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/login" replace />} />

@@ -1,34 +1,3 @@
-const SANTA_PRISCILA_WS =
-  import.meta.env.VITE_SANTA_PRISCILA_WS ?? "ws://localhost:8080/ws/ipsp";
-
-const NATURISA_WS =
-  import.meta.env.VITE_NATURISA_WS ?? "ws://localhost:8080/ws/naturisa";
-
-export interface Finca {
-  id: string;
-  name: string;
-  wsUrl: string | null;
-  hasHistorico: boolean;
-  hasTendencias: boolean;
-}
-
-export const FINCAS: Finca[] = [
-  {
-    id: "ipsp",
-    name: "IPSP",
-    wsUrl: SANTA_PRISCILA_WS,
-    hasHistorico: true,
-    hasTendencias: true,
-  },
-  {
-    id: "naturisa",
-    name: "Naturisa",
-    wsUrl: null,
-    hasHistorico: false,
-    hasTendencias: false,
-  },
-];
-
-export function getFinca(id: string): Finca | undefined {
-  return FINCAS.find((f) => f.id === id);
-}
+// Redirige al nuevo archivo de configuración
+export { EMPRESAS, getEmpresa, getFinca } from "./empresas";
+export type { Finca, Empresa } from "./empresas";
