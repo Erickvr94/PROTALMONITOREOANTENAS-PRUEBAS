@@ -73,7 +73,80 @@ export const EMPRESAS: Empresa[] = [
   {
     id: "naturisa",
     name: "Naturisa",
-    fincas: [],
+    fincas: [
+      {
+        id: "maricultura",
+        name: "Maricultura",
+        wsUrl:
+          import.meta.env.VITE_NATURISA_WS ?? "ws://localhost:8080/ws/naturisa",
+        hasHistorico: true,
+        hasTendencias: true,
+      },
+      {
+        id: "josefina",
+        name: "Josefina",
+        wsUrl:
+          import.meta.env.VITE_NATURISA_WS ?? "ws://localhost:8080/ws/naturisa",
+        hasHistorico: true,
+        hasTendencias: true,
+      },
+      {
+        id: "pesjolla",
+        name: "Pesjolla",
+        wsUrl:
+          import.meta.env.VITE_NATURISA_WS ?? "ws://localhost:8080/ws/naturisa",
+        hasHistorico: true,
+        hasTendencias: true,
+      },
+      {
+        id: "rio nilo",
+        name: "Rio Nilo",
+        wsUrl:
+          import.meta.env.VITE_NATURISA_WS ?? "ws://localhost:8080/ws/naturisa",
+        hasHistorico: true,
+        hasTendencias: true,
+      },
+      {
+        id: "bio rey",
+        name: "Bio Rey",
+        wsUrl:
+          import.meta.env.VITE_NATURISA_WS ?? "ws://localhost:8080/ws/naturisa",
+        hasHistorico: true,
+        hasTendencias: true,
+      },
+      {
+        id: "camino real",
+        name: "Camino Real",
+        wsUrl:
+          import.meta.env.VITE_NATURISA_WS ?? "ws://localhost:8080/ws/naturisa",
+        hasHistorico: true,
+        hasTendencias: true,
+      },
+      {
+        id: "camaron",
+        name: "Camaron",
+        wsUrl:
+          import.meta.env.VITE_NATURISA_WS ?? "ws://localhost:8080/ws/naturisa",
+        hasHistorico: true,
+        hasTendencias: true,
+      },
+      {
+        id: "marchena",
+        name: "Marchena",
+        wsUrl:
+          import.meta.env.VITE_NATURISA_WS ?? "ws://localhost:8080/ws/naturisa",
+        hasHistorico: true,
+        hasTendencias: true,
+      },
+      {
+        id: "lanconor",
+        name: "Lanconor",
+        wsUrl:
+          import.meta.env.VITE_NATURISA_WS ?? "ws://localhost:8080/ws/naturisa",
+        hasHistorico: true,
+        hasTendencias: true,
+      },
+    ],
   },
 ];
 
