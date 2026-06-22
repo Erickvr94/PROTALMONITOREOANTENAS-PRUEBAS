@@ -24,7 +24,7 @@ export default function GatewayCard({ id, gateway, sectorDevices }: Props) {
         <div className="gw-main">
           <div className="gw-title-row">
             <span className="gw-icon">&#9670;</span>
-            <h3 className="gw-name">Gateway {id}</h3>
+            <h3 className="gw-name">{gateway.nombre ?? `Gateway ${id}`}</h3>
           </div>
           <span className="gw-ip">{gateway.ip}</span>
         </div>
@@ -58,12 +58,12 @@ export default function GatewayCard({ id, gateway, sectorDevices }: Props) {
 
       {/* ── Vertical trunk line + sectors ── */}
       <div className="gw-trunk">
-        {gateway.sectores.map((sector, i) => (
+        {(gateway.sectores ?? []).map((sector, i) => (
           <SectorCard
             key={sector}
             name={sector}
             devices={sectorDevices[sector] ?? {}}
-            isLast={i === gateway.sectores.length - 1}
+            isLast={i === (gateway.sectores ?? []).length - 1}
           />
         ))}
       </div>

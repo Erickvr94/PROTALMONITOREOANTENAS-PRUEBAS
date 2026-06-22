@@ -52,6 +52,27 @@
   gap: 1.5rem;
 }
 
+.topo-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.topo-section-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+  margin: 0;
+}
+
+.topo-gateways-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
 /* ── Diagram wrapper (tooltip anchor) ── */
 .diagram-wrapper {
   position: relative;

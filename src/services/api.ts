@@ -16,8 +16,16 @@ export async function apiFetch<T>(
   });
 
   if (!res.ok) {
-    const body = await res.json().catch(() => ({}));
-    throw new ApiError(res.status, body.error ?? "Error del servidor");
+    const text = await res.text().catch(() => "");
+    let detail = "";
+    try {
+      const body = JSON.parse(text);
+      detail = body.error ?? body.message ?? text;
+    } catch {
+      detail = text;
+    }
+    const base = `${res.status} ${res.statusText} — ${path}`;
+    throw new ApiError(res.status, detail ? `${base}: ${detail}` : base);
   }
 
   return res.json() as Promise<T>;

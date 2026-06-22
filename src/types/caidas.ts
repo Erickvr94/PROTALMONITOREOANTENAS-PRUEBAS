@@ -8,7 +8,8 @@ export interface DispositivoCaida {
 
 export interface GatewayCaida {
   ip: string;
-  sectores: string[];
+  nombre?: string;
+  sectores?: string[];
   caidasCount: number;
   totalMuestras: number;
   porcentajeCaida: number;

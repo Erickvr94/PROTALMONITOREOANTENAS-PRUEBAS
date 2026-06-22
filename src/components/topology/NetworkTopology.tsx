@@ -1,4 +1,5 @@
 import type { NetworkState } from "../../types/network";
+import GatewayCard from "./GatewayCard";
 import TopologyDiagram from "./TopologyDiagram";
 import "./topology.css";
 
@@ -58,14 +59,35 @@ export default function NetworkTopology({ state }: Props) {
       {/* ── Topology diagrams ── */}
       <div className="topo-diagrams">
         {hasGateways ? (
-          gwEntries.map(([id, gateway]) => (
-            <TopologyDiagram
-              key={id}
-              gwId={id}
-              gateway={gateway}
-              sectorDevices={state.dispositivos ?? {}}
-            />
-          ))
+          gwEntries.every(([, g]) => (g.sectores?.length ?? 0) > 0) ? (
+            // Modo normal (IPSP): un diagrama por gateway con árbol
+            gwEntries.map(([id, gateway]) => (
+              <TopologyDiagram
+                key={id}
+                gwId={id}
+                gateway={gateway}
+                sectorDevices={state.dispositivos ?? {}}
+              />
+            ))
+          ) : (
+            // Modo Naturisa: sección de gateways + sectores flat sin gateway
+            <>
+              <div className="topo-section">
+                <h2 className="topo-section-title">Gateways</h2>
+                <div className="topo-gateways-row">
+                  {gwEntries.map(([id, gateway]) => (
+                    <GatewayCard
+                      key={id}
+                      id={id}
+                      gateway={gateway}
+                      sectorDevices={{}}
+                    />
+                  ))}
+                </div>
+              </div>
+              <TopologyDiagram sectorDevices={state.dispositivos ?? {}} />
+            </>
+          )
         ) : (
           <TopologyDiagram sectorDevices={state.dispositivos ?? {}} />
         )}

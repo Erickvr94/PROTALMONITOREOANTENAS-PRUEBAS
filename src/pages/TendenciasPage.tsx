@@ -37,6 +37,7 @@ interface RowItem {
   caidasCount: number;
   totalMuestras: number;
   porcentajeCaida: number;
+  gwId?: string; // presente solo en filas de gateway
 }
 
 function buildRows(dia: CaidasDia): RowItem[] {
@@ -73,13 +74,10 @@ function statusLabel(pct: number): string {
 
 /** Looks up a selected row's porcentajeCaida in a given day's data */
 function findDeviceInDay(dia: CaidasDia, row: RowItem): number | null {
-  // Gateway row
-  if (row.nombre.startsWith("GW-")) {
-    const gwId = row.nombre.slice(3);
-    const gw = dia.gateways[gwId];
+  if (row.gwId !== undefined) {
+    const gw = dia.gateways[row.gwId];
     return gw ? gw.porcentajeCaida : null;
   }
-  // Device row
   const sector = dia.dispositivos[row.sector];
   if (!sector) return null;
   const dev = sector[row.nombre];
@@ -583,27 +581,29 @@ export default function TendenciasPage() {
               </thead>
               <tbody>
                 {Object.entries(tableDia.gateways).map(([id, gw]) => {
-                  const isSelected =
-                    selectedRow !== null && selectedRow.nombre === `GW-${id}`;
+                  const gwLabel = gw.nombre ?? `GW-${id}`;
+                  const sectoresStr = (gw.sectores ?? []).join(", ") || "-";
+                  const isSelected = selectedRow?.gwId === id;
                   return (
                     <tr
                       key={`gw-${id}`}
                       className={`table-row-clickable ${isSelected ? "table-row-active" : ""}`}
                       onClick={() =>
                         setSelectedRow({
-                          sector: gw.sectores.join(", "),
-                          nombre: `GW-${id}`,
+                          gwId: id,
+                          sector: sectoresStr,
+                          nombre: gwLabel,
                           ip: gw.ip,
-                          ubicacion: gw.sectores.join(", "),
+                          ubicacion: sectoresStr,
                           caidasCount: gw.caidasCount,
                           totalMuestras: gw.totalMuestras,
                           porcentajeCaida: gw.porcentajeCaida,
                         })
                       }
                     >
-                      <td className="col-mono">GW-{id}</td>
+                      <td className="col-mono">{gwLabel}</td>
                       <td className="col-mono">{gw.ip}</td>
-                      <td>{gw.sectores.join(", ")}</td>
+                      <td>{sectoresStr}</td>
                       <td className="col-num">{gw.caidasCount}</td>
                       <td className="col-num">{gw.totalMuestras}</td>
                       <td className="col-num">{gw.porcentajeCaida}%</td>

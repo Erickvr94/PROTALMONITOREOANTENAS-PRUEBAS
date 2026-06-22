@@ -59,9 +59,7 @@ function useLayout(
     const sectors: SectorLayout[] = [];
 
     // Use gateway.sectores when available; fall back to all keys in sectorDevices
-    const sectorNames = gateway
-      ? gateway.sectores
-      : Object.keys(sectorDevices);
+    const sectorNames = gateway?.sectores ?? Object.keys(sectorDevices);
 
     for (const sName of sectorNames) {
       const devEntries = Object.entries(sectorDevices[sName] ?? {});
@@ -152,7 +150,7 @@ function GatewayIcon({
     : "drop-shadow(0 0 10px rgba(224,80,80,0.3))";
 
   const p = gateway.ultimoPing;
-  const sectores = gateway.sectores.join(", ");
+  const sectores = (gateway.sectores ?? []).join(", ");
 
   const tip = (
     <div>

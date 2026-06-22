@@ -9,6 +9,7 @@ export interface PingResult {
 
 export interface GatewayState {
   ip: string;
+  nombre?: string;
   sectores: string[];
   online: boolean;
   ultimoPing: PingResult;
@@ -43,6 +44,7 @@ export interface GatewayUpdateMsg {
   tipo: "gateway_update";
   id: string;
   ip: string;
+  nombre?: string;
   sectores: string[];
   online: boolean;
   ultimoPing: PingResult;
@@ -70,7 +72,7 @@ function enforceGatewayOffline(next: NetworkState): NetworkState {
   for (const gw of Object.values(next.gateways ?? {})) {
     if (gw.online) continue;
 
-    for (const sector of gw.sectores) {
+    for (const sector of (gw.sectores ?? [])) {
       const devices = dispositivos[sector];
       if (!devices) continue;
 
@@ -110,6 +112,7 @@ export function reduceNetwork(
         ...state.gateways,
         [msg.id]: {
           ip: msg.ip,
+          nombre: msg.nombre,
           sectores: msg.sectores,
           online: msg.online,
           ultimoPing: msg.ultimoPing,
