@@ -66,6 +66,15 @@ export const EMPRESAS: Empresa[] = [
         hasHistorico: true,
         hasTendencias: true,
       },
+      {
+        id: "california",
+        name: "California",
+        wsUrl:
+          import.meta.env.VITE_SANTA_PRISCILA_WS ??
+          "ws://localhost:8080/ws/ipsp",
+        hasHistorico: true,
+        hasTendencias: true,
+      },
       //{ id: "panamano", name: "Pañanamo", wsUrl: import.meta.env.VITE_SANTA_PRISCILA_WS ?? "ws://localhost:8080/ws/ipsp", hasHistorico: false,  hasTendencias: false  },
       //{ id: "churute",  name: "Churute",  wsUrl: import.meta.env.VITE_SANTA_PRISCILA_WS ?? "ws://localhost:8080/ws/ipsp", hasHistorico: false,  hasTendencias: false  },
     ],
