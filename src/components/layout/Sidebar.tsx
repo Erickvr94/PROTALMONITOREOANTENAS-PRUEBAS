@@ -18,7 +18,8 @@ export default function Sidebar() {
   function toggleEmpresa(id: string) {
     setEmpresasAbiertas((prev) => {
       const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.add(id);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
       return next;
     });
   }
@@ -26,7 +27,8 @@ export default function Sidebar() {
   function toggleFinca(key: string) {
     setFincasAbiertas((prev) => {
       const next = new Set(prev);
-      next.has(key) ? next.delete(key) : next.add(key);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
       return next;
     });
   }
@@ -91,6 +93,16 @@ export default function Sidebar() {
                                 >
                                   <span className="nav-icon">&#9673;</span>
                                   Tiempo Real
+                                  {!finca.wsUrl && (
+                                    <span className="badge-soon">Pronto</span>
+                                  )}
+                                </NavLink>
+                                <NavLink
+                                  to={`/dashboard/${empresa.id}/${finca.id}/mapa`}
+                                  className="nav-link nav-link-sub"
+                                >
+                                  <span className="nav-icon">&#9737;</span>
+                                  Mapa
                                   {!finca.wsUrl && (
                                     <span className="badge-soon">Pronto</span>
                                   )}

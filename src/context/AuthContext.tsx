@@ -19,14 +19,14 @@ const AuthContext = createContext<AuthState | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  // Solo hay algo que cargar si existe un token guardado; se decide en el
+  // estado inicial, así el efecto no necesita setState síncrono.
+  const [loading, setLoading] = useState(() =>
+    Boolean(localStorage.getItem("token")),
+  );
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      setLoading(false);
-      return;
-    }
+    if (!localStorage.getItem("token")) return;
     getMe()
       .then(setUser)
       .catch(() => localStorage.removeItem("token"))

@@ -1,0 +1,119 @@
+.mapa-page { display: flex; flex-direction: column; gap: 10px; height: 100%; }
+
+/* ── Header con contadores clicables (estilo mapa live) ── */
+.mapa-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+.mapa-toolbar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+.badge-cnt {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,.04); border: 1.5px solid rgba(255,255,255,.12);
+  border-radius: 20px; padding: 4px 12px; font-size: 13px; font-weight: 700;
+  cursor: pointer; transition: all .15s; color: inherit;
+}
+.badge-cnt:hover { box-shadow: 0 2px 8px rgba(0,0,0,.35); border-color: rgba(255,255,255,.3); }
+.badge-cnt.activo { border-color: #3b82f6; background: rgba(59,130,246,.15); }
+.badge-cnt .dot { width: 9px; height: 9px; border-radius: 50%; }
+
+.btn-campamento {
+  border: 1.5px solid rgba(255,255,255,.15); background: rgba(59,130,246,.15);
+  color: inherit; border-radius: 8px; padding: 5px 12px; font-size: 13px;
+  font-weight: 700; cursor: pointer; transition: all .15s;
+}
+.btn-campamento:hover { background: rgba(59,130,246,.3); }
+
+.mapa-ts { font-size: 12px; opacity: .65; }
+
+/* ── Fila de filtros ── */
+.mapa-filtros { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.fb {
+  border: 1.5px solid rgba(255,255,255,.12); border-radius: 6px; padding: 4px 12px;
+  background: rgba(255,255,255,.03); color: inherit; opacity: .75;
+  cursor: pointer; font-size: 12px; font-weight: 600; transition: all .15s;
+}
+.fb:hover { opacity: 1; border-color: rgba(255,255,255,.35); }
+.fb.on { opacity: 1; color: #fff; background: #334155; border-color: #334155; }
+
+/* ── Cuerpo: mapa + panel lateral ── */
+.mapa-body { position: relative; flex: 1; min-height: 480px; display: flex; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 6px rgba(0,0,0,.4); }
+.mapa-leaflet { flex: 1; min-height: 480px; }
+
+.mapa-panel {
+  width: 280px; background: rgba(15,23,42,.97); border-left: 1.5px solid rgba(255,255,255,.1);
+  display: flex; flex-direction: column; z-index: 500;
+}
+.mapa-panel.cerrado { display: none; }
+.sp-search {
+  margin: 10px 10px 6px; padding: 7px 11px; border: 1.5px solid rgba(255,255,255,.15);
+  border-radius: 6px; font-size: 13px; background: rgba(255,255,255,.05);
+  color: inherit; outline: none;
+}
+.sp-search:focus { border-color: #0284c7; }
+.sp-lista { flex: 1; overflow-y: auto; padding: 4px 6px 10px; }
+.sp-item {
+  display: flex; justify-content: space-between; align-items: center; gap: 6px;
+  padding: 7px 9px; border-radius: 6px; cursor: pointer; font-size: 12.5px;
+}
+.sp-item:hover { background: rgba(255,255,255,.07); }
+.sp-item .nm { font-weight: 700; }
+.sp-item .ip { opacity: .55; font-size: 11px; }
+.sp-vacio { padding: 14px; font-size: 12px; opacity: .6; text-align: center; }
+
+.panel-toggle {
+  position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+  background: rgba(15,23,42,.95); border: 1.5px solid rgba(255,255,255,.15); border-right: none;
+  border-radius: 8px 0 0 8px; padding: 10px 6px; cursor: pointer; z-index: 600;
+  font-size: 12px; color: #e2e8f0; font-weight: 700;
+}
+
+/* ── Pills de estado (panel y popups) ── */
+.pill { border-radius: 10px; padding: 2px 9px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+.pill-ok   { background: #dcfce7; color: #166534; }
+.pill-weak { background: #fef9c3; color: #854d0e; }
+.pill-nolink { background: #ffedd5; color: #9a3412; }
+.pill-down { background: #fee2e2; color: #991b1b; }
+.pill-nd   { background: #e5e7eb; color: #4b5563; }
+.pill-eq   { background: #dbeafe; color: #1e40af; }
+
+/* ── Marcadores divIcon ── */
+.mw { position: relative; width: 24px; height: 24px; }
+.mw .mr {
+  position: absolute; inset: 0; border-radius: 50%;
+  border: 3px solid var(--mk, #16a34a); opacity: .5;
+}
+.mw .mc {
+  position: absolute; inset: 6px; border-radius: 50%;
+  background: var(--mk, #16a34a); border: 2px solid #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,.5);
+}
+.mw.mk-down .mr { animation: pulso 1.2s infinite; }
+@keyframes pulso { 0%,100% { transform: scale(1); opacity:.5 } 50% { transform: scale(1.35); opacity:.15 } }
+
+.tower-badge {
+  position: absolute; top: -7px; right: -9px; background: #0284c7; color: #fff;
+  border-radius: 8px; font-size: 9px; font-weight: 700; padding: 1px 4px;
+  line-height: 1.4; white-space: nowrap; box-shadow: 0 1px 3px rgba(0,0,0,.4);
+}
+
+.mw-eq {
+  width: 28px; height: 28px; border-radius: 7px; background: #0f172a;
+  border: 2.5px solid var(--mk, #16a34a); display: flex; align-items: center;
+  justify-content: center; font-size: 15px; box-shadow: 0 1px 4px rgba(0,0,0,.5);
+}
+
+/* ── Popup ── */
+.mp-pop { font-size: 13px; min-width: 200px; color: #111; }
+.mp-pop .pn { font-weight: 800; margin-bottom: 6px; font-size: 14px; }
+.mp-pop .pr { display: flex; justify-content: space-between; gap: 10px; margin: 3px 0; }
+.mp-pop .pk { opacity: .6; }
+.mp-pop .pv { font-weight: 600; text-align: right; }
+.mp-pop-error { margin-top: 6px; color: #991b1b; font-size: 12px; }
+
+.mapa-error, .mapa-cargando { padding: 12px 16px; border-radius: 8px; font-size: 14px; }
+.mapa-cargando { background: rgba(59,130,246,.15); }
+.mapa-error { background: rgba(220,38,38,.2); }
+
+.ws-status { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 999px; background: rgba(255,255,255,.06); }
+.ws-status .ws-dot { width: 8px; height: 8px; border-radius: 50%; background: #9ca3af; }
+.ws-connected .ws-dot { background: #22c55e; }
+.ws-connecting .ws-dot { background: #eab308; animation: pulso 1s infinite; }
+.ws-disconnected .ws-dot { background: #ef4444; }

@@ -8,6 +8,7 @@ import RealtimePage from "./pages/RealtimePage";
 import HistoricoPage from "./pages/HistoricoPage";
 import TendenciasPage from "./pages/TendenciasPage";
 import EmpresaPage from "./pages/EmpresaPage";
+import MapaPage from "./pages/MapaPage";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             <Route index element={<DashboardHome />} />
             <Route path=":empresaId" element={<EmpresaPage />} />
             <Route path=":empresaId/:fincaId/realtime" element={<RealtimePage />} />
+            <Route path=":empresaId/:fincaId/mapa" element={<MapaPage />} />
             <Route path=":empresaId/:fincaId/historico" element={<HistoricoPage />} />
             <Route path=":empresaId/:fincaId/tendencias" element={<TendenciasPage />} />
           </Route>
