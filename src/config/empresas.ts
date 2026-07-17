@@ -157,6 +157,40 @@ export const EMPRESAS: Empresa[] = [
       },
     ],
   },
+  {
+    id: "grupobrito",
+    name: "Grupo Brito",
+    fincas: [
+      {
+        id: "conchero",
+        name: "Conchero",
+        wsUrl: import.meta.env.VITE_GRUPO_BRITO_WS ?? "ws://localhost:8080/ws/grupobrito",
+        hasHistorico: true,
+        hasTendencias: true,
+      },
+      {
+        id: "exporcambrit",
+        name: "Exporcambrit",
+        wsUrl: import.meta.env.VITE_GRUPO_BRITO_WS ?? "ws://localhost:8080/ws/grupobrito",
+        hasHistorico: true,
+        hasTendencias: true,
+      },
+      {
+        id: "mercycabrera",
+        name: "MercyCabrera",
+        wsUrl: import.meta.env.VITE_GRUPO_BRITO_WS ?? "ws://localhost:8080/ws/grupobrito",
+        hasHistorico: true,
+        hasTendencias: true,
+      },
+      {
+        id: "vanecrubri",
+        name: "Vanecrubri",
+        wsUrl: import.meta.env.VITE_GRUPO_BRITO_WS ?? "ws://localhost:8080/ws/grupobrito",
+        hasHistorico: true,
+        hasTendencias: true,
+      },
+    ],
+  },
 ];
 
 export function getEmpresa(empresaId: string): Empresa | undefined {
