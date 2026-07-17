@@ -401,3 +401,127 @@
   text-align: right;
   word-break: break-all;
 }
+
+@media (max-width: 1100px) {
+  .charts-row {
+    flex-direction: column;
+  }
+
+  .chart-card {
+    width: 100%;
+  }
+
+  .chart-card-grow {
+    min-width: auto;
+  }
+
+  .chart-card-details {
+    min-width: auto;
+  }
+
+  .tendencias-table {
+    font-size: 0.75rem;
+  }
+
+  .tendencias-table th {
+    font-size: 0.65rem;
+  }
+
+  .tendencias-table td {
+    padding: 0.4rem 0.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .tendencias-page {
+    gap: 1rem;
+  }
+
+  .tendencias-header {
+    flex-direction: column;
+  }
+
+  .tendencias-toolbar {
+    padding: 0.5rem 0.75rem;
+    gap: 0.5rem;
+  }
+
+  .tendencias-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .toolbar-date-range {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .toolbar-date-range input {
+    width: 100%;
+  }
+
+  .tendencias-charts {
+    padding: 1rem;
+  }
+
+  .pie-svg {
+    width: 150px;
+    height: 150px;
+  }
+
+  .pie-pct-text {
+    font-size: 18px;
+  }
+
+  .pie-sub-text {
+    font-size: 10px;
+  }
+
+  .pie-label {
+    font-size: 0.75rem;
+  }
+
+  .pie-legend {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .bar-grid-label {
+    font-size: 9px;
+  }
+
+  .bar-value-label {
+    font-size: 10px;
+  }
+
+  .bar-date-label {
+    font-size: 10px;
+  }
+
+  .tendencias-table {
+    font-size: 0.7rem;
+    table-layout: auto;
+  }
+
+  .tendencias-table th {
+    font-size: 0.6rem;
+    padding: 0.35rem 0.4rem;
+  }
+
+  .tendencias-table td {
+    padding: 0.35rem 0.4rem;
+  }
+
+  .col-mono {
+    font-size: 0.65rem;
+  }
+
+  .col-num {
+    font-size: 0.65rem;
+  }
+
+  .status-badge {
+    padding: 0.1rem 0.35rem;
+    font-size: 0.6rem;
+  }
+}

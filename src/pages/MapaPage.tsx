@@ -61,7 +61,7 @@ const COLORES: Record<Caso, string> = {
 
 const EMOJI_EQUIPO: Record<string, string> = {
   HMI: "🖥️",
-  PLC: "⚙️",
+  PLC: "📟",
   Raspberry: "🍓",
 };
 

@@ -79,3 +79,14 @@
   color: #4a5068;
   font-size: 0.9rem;
 }
+
+@media (max-width: 640px) {
+  .realtime-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .realtime-empty {
+    padding: 2.5rem 1rem;
+  }
+}

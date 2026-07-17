@@ -117,3 +117,34 @@
 .ws-connected .ws-dot { background: #22c55e; }
 .ws-connecting .ws-dot { background: #eab308; animation: pulso 1s infinite; }
 .ws-disconnected .ws-dot { background: #ef4444; }
+
+@media (max-width: 1100px) {
+  .mapa-body {
+    flex-direction: column;
+  }
+
+  .mapa-panel {
+    width: 100%;
+    border-left: none;
+    border-top: 1.5px solid rgba(255,255,255,.1);
+    max-height: 320px;
+  }
+
+  .mapa-leaflet {
+    min-height: 320px;
+  }
+}
+
+@media (max-width: 640px) {
+  .mapa-header {
+    align-items: flex-start;
+  }
+
+  .mapa-toolbar {
+    width: 100%;
+  }
+
+  .mapa-filtros {
+    width: 100%;
+  }
+}
