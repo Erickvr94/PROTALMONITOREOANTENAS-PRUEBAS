@@ -159,33 +159,37 @@ export const EMPRESAS: Empresa[] = [
   },
   {
     id: "grupobrito",
-    name: "Grupo Brito",
+    name: "GrupoBrito",
     fincas: [
       {
         id: "conchero",
         name: "Conchero",
-        wsUrl: import.meta.env.VITE_GRUPO_BRITO_WS ?? "ws://localhost:8080/ws/grupobrito",
+        wsUrl:
+          import.meta.env.VITE_GRUPOBRITO_WS ?? "ws://localhost:8080/ws/grupobrito",
+        hasHistorico: true,
+        hasTendencias: true,
+      },
+      {
+        id: "mercycabrera",
+        name: "Mercy Cabrera",
+        wsUrl:
+          import.meta.env.VITE_GRUPOBRITO_WS ?? "ws://localhost:8080/ws/grupobrito",
         hasHistorico: true,
         hasTendencias: true,
       },
       {
         id: "exporcambrit",
         name: "Exporcambrit",
-        wsUrl: import.meta.env.VITE_GRUPO_BRITO_WS ?? "ws://localhost:8080/ws/grupobrito",
+        wsUrl:
+          import.meta.env.VITE_GRUPOBRITO_WS ?? "ws://localhost:8080/ws/grupobrito",
         hasHistorico: true,
         hasTendencias: true,
       },
       {
-        id: "mercycabrera",
-        name: "MercyCabrera",
-        wsUrl: import.meta.env.VITE_GRUPO_BRITO_WS ?? "ws://localhost:8080/ws/grupobrito",
-        hasHistorico: true,
-        hasTendencias: true,
-      },
-      {
-        id: "vanecrubri",
-        name: "Vanecrubri",
-        wsUrl: import.meta.env.VITE_GRUPO_BRITO_WS ?? "ws://localhost:8080/ws/grupobrito",
+        id: "vanecubri",
+        name: "Vanecubri",
+        wsUrl:
+          import.meta.env.VITE_GRUPOBRITO_WS ?? "ws://localhost:8080/ws/grupobrito",
         hasHistorico: true,
         hasTendencias: true,
       },

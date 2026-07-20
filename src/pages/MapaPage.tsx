@@ -7,8 +7,6 @@ import { apiFetch } from "../services/api";
 import { useWebSocket, type WsStatus } from "../hooks/useWebSocket";
 import "./MapaPage.css";
 
-/* ── Tipos del endpoint /api/ipsp/:finca/mapa ── */
-
 interface EstadoAntena {
   online: boolean | null;
   potencia: number | null;
@@ -237,10 +235,10 @@ export default function MapaPage() {
 
     L.tileLayer(
       "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-      { maxZoom: 19, attribution: "Tiles © Esri" },
+      { maxZoom: 5, attribution: "Tiles © Esri" },
     ).addTo(map);
 
-    apiFetch<MapaResponse>(`/api/ipsp/${finca.id}/mapa`)
+    apiFetch<MapaResponse>(`/api/${empresaId}/${finca.id}/mapa`)
       .then((data) => {
         if (!activo || mapRef.current !== map) return;
 
@@ -251,6 +249,12 @@ export default function MapaPage() {
           if (!porTorre.has(t)) porTorre.set(t, []);
           porTorre.get(t)!.push(a);
         }
+
+       /* / /console.log("Mapa request", {
+          empresaId,
+          fincaId,
+          path: `/api/${empresaId}/${finca?.id}/mapa`,
+        });*/
 
         const mapa = new Map<string, Antena>();
         const bounds: [number, number][] = [];
