@@ -151,6 +151,66 @@ function spiralOffset(index: number, total: number): [number, number] {
   return [STEP * Math.sin(angle), STEP * Math.cos(angle)];
 }
 
+/* ── Centro dinámico del mapa ───────────────────────────────────────────────
+   Prioridad: HMI_1 → HMI_2 → … → RB → cualquier otro equipo → torre        */
+
+function tieneCoord(a: Antena): boolean {
+  return a.coordenadas.lat != null && a.coordenadas.lon != null;
+}
+
+function coordDe(a: Antena): [number, number] {
+  return [a.coordenadas.lat!, a.coordenadas.lon!];
+}
+
+function rankReferencia(a: Antena): number | null {
+  const n = `${a.nombre} ${a.id}`.toLowerCase();
+
+  const hmi = n.match(/hmi[_\-\s]?(\d+)/);
+  if (hmi) return 100 + Number(hmi[1]);        // HMI_1 → 101, HMI_2 → 102…
+  if (/\bhmi\b/.test(n)) return 150;           // HMI sin número
+
+  const rb = n.match(/\brb[_\-\s]?(\d*)\b/);
+  if (rb) return 200 + (Number(rb[1]) || 0);   // RB, RB1, RB_2…
+
+  return null;
+}
+
+function centroDinamico(
+  antenas: Antena[],
+): { centro: [number, number]; zoom: number; origen: string } | null {
+  const conCoord = antenas.filter(tieneCoord);
+  if (!conCoord.length) return null;
+
+  const refs = conCoord
+    .map((a) => ({ a, r: rankReferencia(a) }))
+    .filter((x): x is { a: Antena; r: number } => x.r !== null)
+    .sort((x, y) => x.r - y.r);
+  if (refs.length) {
+    return { centro: coordDe(refs[0].a), zoom: 17, origen: refs[0].a.nombre };
+  }
+
+  const equipo = conCoord.find((a) => a.tipo !== "antena");
+  if (equipo) return { centro: coordDe(equipo), zoom: 17, origen: equipo.nombre };
+
+  const torre = conCoord.find((a) => a.tipo === "antena");
+  if (torre) return { centro: coordDe(torre), zoom: 15, origen: `torre ${torre.nombre}` };
+
+  return null;
+}
+
+/* Diagnóstico: cuántas coordenadas DISTINTAS manda el backend */
+function diagnosticoCoords(antenas: Antena[]): void {
+  const sinCoord = antenas.filter((a) => !tieneCoord(a));
+  const distintas = new Set(
+    antenas.filter(tieneCoord).map((a) => `${a.coordenadas.lat},${a.coordenadas.lon}`),
+  );
+  console.info(
+    `[MapaPage] ${antenas.length} dispositivos · ${distintas.size} coordenadas distintas · ${sinCoord.length} sin coordenada`,
+    [...distintas],
+  );
+  if (sinCoord.length) console.warn("[MapaPage] sin coordenada:", sinCoord.map((a) => a.nombre));
+}
+
 const STATUS_LABELS: Record<WsStatus, string> = {
   connecting: "Conectando...",
   connected: "Conectado",
@@ -227,20 +287,28 @@ export default function MapaPage() {
   useEffect(() => {
     if (!finca || !mapDivRef.current || mapRef.current) return;
 
-    console.info("[MapaPage] v4 cargada");
-    const map = L.map(mapDivRef.current, { zoomControl: true });
-    map.setView([-2.633, -79.68], 13);
+    console.info("[MapaPage] v6 cargada");
+    const map = L.map(mapDivRef.current, {
+      zoomControl: true,
+      minZoom: 3,
+      maxZoom: 19,
+    });
+    // Vista provisional: Leaflet exige una vista antes de agregar capas.
+    // Se reemplaza en cuanto responde /api/:empresa/:finca/mapa
+    map.setView([-1.8, -79.5], 6);
     mapRef.current = map;
     let activo = true;
 
     L.tileLayer(
       "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-      { maxZoom: 5, attribution: "Tiles © Esri" },
+      { maxZoom: 19, maxNativeZoom: 19, attribution: "Tiles © Esri" },
     ).addTo(map);
 
     apiFetch<MapaResponse>(`/api/${empresaId}/${finca.id}/mapa`)
       .then((data) => {
         if (!activo || mapRef.current !== map) return;
+
+        diagnosticoCoords(data.antenas);
 
         const porTorre = new Map<string, Antena[]>();
         for (const a of data.antenas) {
@@ -277,7 +345,27 @@ export default function MapaPage() {
 
         try {
           map.invalidateSize();
-          if (bounds.length) map.fitBounds(bounds, { padding: [30, 30] });
+          const ref = centroDinamico(data.antenas);
+          const capa = bounds.length ? L.latLngBounds(bounds) : null;
+
+          if (ref && capa) {
+            // Centro en el HMI/RB, pero con un zoom que NO recorte el resto
+            // de la finca: se toma el menor entre el zoom deseado y el que
+            // hace caber todos los marcadores.
+            const zoomQueEncaja = map.getBoundsZoom(
+              capa.extend(ref.centro),
+              false,
+              L.point(30, 30),
+            );
+            map.setView(ref.centro, Math.min(ref.zoom, zoomQueEncaja));
+            console.info(
+              `[MapaPage] centrado en ${ref.origen} · zoom ${Math.min(ref.zoom, zoomQueEncaja)}`,
+            );
+          } else if (ref) {
+            map.setView(ref.centro, ref.zoom);
+          } else if (capa) {
+            map.fitBounds(capa, { padding: [30, 30] });
+          }
         } catch { /* vista inicial */ }
 
         setAntenas(mapa);
