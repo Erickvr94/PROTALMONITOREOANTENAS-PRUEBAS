@@ -1,0 +1,90 @@
+.plan-page { display: flex; flex-direction: column; gap: 12px; height: 100%; }
+
+.plan-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.plan-head h1 { margin: 0; font-size: 20px; font-weight: 800; }
+.plan-sub { margin: 3px 0 0; font-size: 12px; opacity: .7; }
+
+.plan-btn {
+  display: inline-block; cursor: pointer; padding: 7px 14px; border-radius: 8px;
+  font-size: 12px; font-weight: 700; color: #fff; background: #2563eb; border: none;
+}
+.plan-btn:hover { filter: brightness(1.08); }
+
+/* Zona de carga */
+.plan-drop {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 8px; padding: 46px 24px; text-align: center;
+  border: 2px dashed rgba(148,163,184,.55); border-radius: 14px;
+  background: rgba(148,163,184,.06); transition: .15s;
+}
+.plan-drop.on { border-color: #2563eb; background: rgba(37,99,235,.10); }
+.plan-drop-ic {
+  width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center;
+  font-size: 26px; font-weight: 300; color: #fff; background: #2563eb;
+}
+.plan-drop-t { margin: 4px 0 0; font-size: 15px; font-weight: 700; }
+.plan-drop-s { margin: 0 0 6px; max-width: 460px; font-size: 12px; line-height: 1.5; opacity: .72; }
+
+.plan-error {
+  padding: 10px 14px; border-radius: 9px; font-size: 13px;
+  color: #fecaca; background: rgba(220,38,38,.16); border: 1.5px solid #dc2626;
+}
+
+/* Barra de filtros */
+.plan-bar {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+  padding: 8px 12px; border-radius: 10px;
+  background: rgba(37,99,235,.08); border: 1.5px solid rgba(37,99,235,.35);
+}
+.plan-file { font-size: 12px; font-weight: 700; opacity: .85; }
+.plan-sel {
+  padding: 4px 8px; border-radius: 7px; font-size: 12px;
+  background: rgba(0,0,0,.3); color: inherit; border: 1.5px solid rgba(255,255,255,.18);
+}
+.plan-gb {
+  padding: 4px 12px; border-radius: 7px; font-size: 12px; font-weight: 700; cursor: pointer;
+  background: transparent; color: inherit; border: 1.5px solid rgba(255,255,255,.25); opacity: .55;
+}
+.plan-gb.on { opacity: 1; }
+.plan-check { display: flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 600; cursor: pointer; }
+.plan-stats { margin-left: auto; font-size: 12px; font-weight: 700; color: #93c5fd; }
+
+.plan-avisos { font-size: 12px; }
+.plan-avisos summary { cursor: pointer; font-weight: 700; color: #fbbf24; }
+.plan-avisos ul { margin: 6px 0 0; padding-left: 20px; line-height: 1.6; opacity: .85; }
+
+/* Cuerpo */
+.plan-cuerpo { display: flex; gap: 12px; flex: 1; min-height: 460px; }
+.plan-mapa { flex: 1; border-radius: 12px; overflow: hidden; min-height: 460px; }
+
+.plan-lista {
+  width: 280px; flex-shrink: 0; overflow-y: auto; max-height: 640px;
+  border-radius: 12px; padding: 10px;
+  background: rgba(148,163,184,.07); border: 1.5px solid rgba(148,163,184,.2);
+}
+.plan-lista-h { font-size: 12px; font-weight: 800; opacity: .7; margin-bottom: 8px; }
+.plan-ruta { padding: 8px 0; border-bottom: 1px solid rgba(148,163,184,.16); }
+.plan-ruta:last-child { border-bottom: none; }
+.plan-ruta-h { display: flex; align-items: center; gap: 6px; font-size: 13px; }
+.plan-ruta-km { margin-left: auto; font-size: 11px; opacity: .65; font-weight: 600; }
+.plan-ruta-p { margin-top: 3px; font-size: 11px; line-height: 1.45; opacity: .65; }
+.plan-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+/* Marcadores y popup del plan */
+.pl-mk {
+  width: 26px; height: 26px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 11px; font-weight: 800;
+  border: 3px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,.45);
+}
+.pl-pop { min-width: 210px; font-size: 12px; }
+.pl-pop-h { padding: 7px 10px; color: #fff; font-weight: 800; font-size: 13px; }
+.pl-pop-b { padding: 8px 10px; display: flex; flex-direction: column; gap: 3px; color: #1e293b; }
+.pl-pop-hoja { margin-top: 4px; font-size: 10px; opacity: .55; text-transform: uppercase; }
+.leaflet-popup-content { margin: 0 !important; }
+.leaflet-popup-content-wrapper { padding: 0 !important; overflow: hidden; }
+
+@media (max-width: 900px) {
+  .plan-cuerpo { flex-direction: column; }
+  .plan-lista { width: auto; max-height: 260px; }
+}
