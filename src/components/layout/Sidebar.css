@@ -17,6 +17,10 @@
   overflow-y: auto;
 }
 
+.mobile-close {
+  display: none;
+}
+
 /* ── Brand ── */
 .sidebar-brand {
   padding: 1.5rem 1.25rem 1rem;
@@ -301,11 +305,11 @@
   }
 
   .sidebar-nav {
+    padding: 0.75rem;
+  }
 
   .mobile-close {
     display: none;
-  }
-    padding: 0.75rem;
   }
 
   .nav-link,
@@ -328,5 +332,4 @@
   .logout-btn {
     padding: 0.6rem;
   }
-  
 }
