@@ -20,9 +20,9 @@ export const PruebaSupabase = () => {
         const dataAvances = await resAvances.json()
         const dataOrdenes_trabajo = await resOrdenes_trabajo.json()
 
-        console.log('✅ Tableros recibidos:', dataTableros)
-        console.log('✅ Avances recibidos:', dataAvances)
-        console.log('✅ Ordenes de trabajo recibidas:', dataOrdenes_trabajo)
+        console.log('Tableros recibidos:', dataTableros)
+        console.log('Avances recibidos:', dataAvances)
+        console.log('Ordenes de trabajo recibidas:', dataOrdenes_trabajo)
 
         setTableros(dataTableros)
         setAvances(dataAvances)
