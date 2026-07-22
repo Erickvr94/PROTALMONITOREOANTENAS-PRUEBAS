@@ -10,11 +10,16 @@ import TendenciasPage from "./pages/TendenciasPage";
 import EmpresaPage from "./pages/EmpresaPage";
 import MapaPage from "./pages/MapaPage";
 import PlanPage from "./pages/PlanPage";
-
+import { PruebaSupabase } from './components/PruebaSupabase'
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
+        return (
+        <div>
+          <PruebaSupabase />
+        </div>
+      )
         <Routes>
           <Route path="/login" element={<LoginPage />} />
 
