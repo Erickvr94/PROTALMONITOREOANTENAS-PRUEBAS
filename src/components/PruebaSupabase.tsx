@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-export const PruebaExpress: React.FC = () => {
+export const PruebaSupabase = () => {
   const [tableros, setTableros] = useState<any[]>([])
   const [avances, setAvances] = useState<any[]>([])
   const [cargando, setCargando] = useState<boolean>(true)
@@ -50,3 +50,5 @@ export const PruebaExpress: React.FC = () => {
     </div>
   )
 }
+
+export default PruebaSupabase

@@ -1,7 +1,6 @@
 /* ─────────────────────────────────────────────────────────────────────────
    Capas base del mapa. Todas son gratuitas y sin API key.
-
-   Modulo aparte a proposito: MapaPage puede montar el mismo selector sin
+   Modulo aparte: MapaPage puede montar el mismo selector sin
    duplicar URLs ni atribuciones.
    ───────────────────────────────────────────────────────────────────────── */
 
