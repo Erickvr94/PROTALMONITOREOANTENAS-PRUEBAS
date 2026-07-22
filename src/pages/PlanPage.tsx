@@ -190,6 +190,7 @@ export default function PlanPage() {
                  <div class="pl-pop-hoja">${esc(p.hoja)}</div>
                </div>
              </div>`,
+            { className: "pl-popup" },
           )
           .addTo(capa);
       });

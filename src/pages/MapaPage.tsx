@@ -498,7 +498,7 @@ export default function MapaPage() {
             bounds.push([lat, lon]);
 
             const mk = L.marker([lat, lon], { icon: iconoDe(a, torre) })
-              .bindPopup(popupHtml(a, torre))
+              .bindPopup(popupHtml(a, torre), { className: "mp-popup" })
               .addTo(map);
             markersRef.current.set(a.id, mk);
             mapa.set(a.id, a);

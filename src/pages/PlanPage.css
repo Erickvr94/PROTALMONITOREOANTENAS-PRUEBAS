@@ -81,8 +81,11 @@
 .pl-pop-h { padding: 7px 10px; color: #fff; font-weight: 800; font-size: 13px; }
 .pl-pop-b { padding: 8px 10px; display: flex; flex-direction: column; gap: 3px; color: #1e293b; }
 .pl-pop-hoja { margin-top: 4px; font-size: 10px; opacity: .55; text-transform: uppercase; }
-.leaflet-popup-content { margin: 0 !important; }
-.leaflet-popup-content-wrapper { padding: 0 !important; overflow: hidden; }
+/* Acotadas a los popups del plan: sin el prefijo .pl-popup estas reglas
+   pisaban tambien los popups de MapaPage, que dependian del margen por
+   defecto de Leaflet. */
+.pl-popup .leaflet-popup-content { margin: 0 !important; }
+.pl-popup .leaflet-popup-content-wrapper { padding: 0 !important; overflow: hidden; }
 
 @media (max-width: 900px) {
   .plan-cuerpo { flex-direction: column; }

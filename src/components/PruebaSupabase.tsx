@@ -3,27 +3,32 @@ import React, { useEffect, useState } from 'react'
 export const PruebaSupabase = () => {
   const [tableros, setTableros] = useState<any[]>([])
   const [avances, setAvances] = useState<any[]>([])
+  const [ordenenes_trabajo, setOrdenenes_trabajo] = useState<any[]>([])
   const [cargando, setCargando] = useState<boolean>(true)
 
   useEffect(() => {
     const obtenerDatos = async () => {
       try {
         // Peticiones paralelas al backend de Express
-        const [resTableros, resAvances] = await Promise.all([
+        const [resTableros, resAvances, resOrdenes_trabajo] = await Promise.all([
           fetch('http://localhost:3001/api/tableros'),
-          fetch('http://localhost:3001/api/avances')
+          fetch('http://localhost:3001/api/avances'),
+          fetch('http://localhost:3001/api/ordenes_trabajo')
         ])
 
         const dataTableros = await resTableros.json()
         const dataAvances = await resAvances.json()
+        const dataOrdenes_trabajo = await resOrdenes_trabajo.json()
 
         console.log('✅ Tableros recibidos:', dataTableros)
         console.log('✅ Avances recibidos:', dataAvances)
+        console.log('✅ Ordenes de trabajo recibidas:', dataOrdenes_trabajo)
 
         setTableros(dataTableros)
         setAvances(dataAvances)
+        setOrdenenes_trabajo(dataOrdenes_trabajo)
       } catch (error) {
-        console.error('❌ Error al obtener datos desde Express:', error)
+        console.error(' Error al obtener datos desde Express:', error)
       } finally {
         setCargando(false)
       }
@@ -47,7 +52,12 @@ export const PruebaSupabase = () => {
       <pre style={{ background: '#1e1e1e', padding: '10px', borderRadius: '5px' }}>
         {JSON.stringify(avances, null, 2)}
       </pre>
-    </div>
+
+      <h3>Ordenes de Trabajo ({ordenenes_trabajo.length})</h3>
+      <pre style={{ background: '#1e1e1e', padding: '10px', borderRadius: '5px' }}>
+        {JSON.stringify(ordenenes_trabajo, null, 2)}
+      </pre>
+s    </div>
   )
 }
 

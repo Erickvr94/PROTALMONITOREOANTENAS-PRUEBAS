@@ -101,9 +101,19 @@
 }
 
 /* ── Popup ── */
-.mp-pop { font-size: 13px; min-width: 200px; color: #111; }
-.mp-pop .pn { font-weight: 800; margin-bottom: 6px; font-size: 14px; }
-.mp-pop .pr { display: flex; justify-content: space-between; gap: 10px; margin: 3px 0; padding: 2px 8px 0px 8px; }
+/* El popup se maquetea a si mismo en vez de heredar el margen por defecto
+   de Leaflet: asi el titulo y las filas comparten el mismo eje izquierdo. */
+.mp-popup .leaflet-popup-content { margin: 0 !important; }
+.mp-popup .leaflet-popup-content-wrapper { padding: 0 !important; overflow: hidden; }
+
+.mp-pop { font-size: 13px; min-width: 210px; color: #111; padding: 10px 12px; }
+.mp-pop .pn {
+  font-weight: 800; font-size: 14px;
+  padding-right: 18px;            /* deja sitio a la X de cerrar */
+  padding-bottom: 7px; margin-bottom: 5px;
+  border-bottom: 1px solid rgba(0,0,0,.10);
+}
+.mp-pop .pr { display: flex; justify-content: space-between; gap: 10px; margin: 3px 0; padding: 0; }
 .mp-pop .pk { opacity: .6; }
 .mp-pop .pv { font-weight: 600; text-align: right; }
 .mp-pop-error { margin-top: 6px; color: #991b1b; font-size: 12px; }
