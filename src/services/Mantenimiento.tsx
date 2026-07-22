@@ -16,7 +16,7 @@ import type {
   MantenimientoProvider,
   OrdenTrabajo,
   SemillaEquipo,
-} from "../types/Tiposmantenimiento";
+} from "../types/tiposMantenimiento";
 
 /* Parámetros de la siembra local */
 const EQUIPOS_POR_DIA = 25;

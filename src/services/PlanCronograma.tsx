@@ -63,15 +63,26 @@ const ALIAS: Record<string, string[]> = {
   mantenimiento: ["mantenimiento", "tipomantenimiento", "clase"],
 };
 
+/** Variantes de un encabezado: tal cual y en singular.
+   Hace falta porque los archivos reales traen "Ip Antenas", "Piscinas",
+   "Ordenes" donde el diccionario tiene el singular. */
+function variantes(n: string): string[] {
+  const v = [n];
+  if (n.endsWith("es")) v.push(n.slice(0, -2));
+  if (n.endsWith("s")) v.push(n.slice(0, -1));
+  return v;
+}
+
 /** Mapea indice de columna → campo logico. */
 function mapearColumnas(cabecera: unknown[]): Record<string, number> {
   const m: Record<string, number> = {};
   cabecera.forEach((h, i) => {
     const n = norm(h);
     if (!n) return;
+    const vs = variantes(n);
     for (const [campo, alias] of Object.entries(ALIAS)) {
       if (m[campo] !== undefined) continue;
-      if (alias.includes(n)) m[campo] = i;
+      if (vs.some((v) => alias.includes(v))) m[campo] = i;
     }
   });
   return m;
@@ -191,25 +202,104 @@ export async function leerCronograma(archivo: File): Promise<PlanCargado> {
     avisos.push(`${descartadasSinNombre} fila(s) descartada(s) por no tener nombre de equipo.`);
   }
 
-  // Si el archivo trae fecha pero no numero de dia, se deduce ordenando fechas.
+  /* Dia para las filas que no lo traen (tipico de la hoja de campamento).
+     Se reutiliza el mapa fecha→dia que ya definen las hojas que SI lo traen,
+     para no inventar una numeracion paralela. Solo si ninguna hoja trae dia
+     se rankean las fechas desde cero. */
   const sinDia = paradas.filter((p) => !p.dia);
-  if (sinDia.length && sinDia.some((p) => p.fecha)) {
-    const fechas = [...new Set(sinDia.map((p) => p.fecha).filter(Boolean))].sort() as string[];
-    for (const p of sinDia) {
-      if (p.fecha) p.dia = fechas.indexOf(p.fecha) + 1;
+  if (sinDia.length) {
+    /* fecha → dia, resuelto por MAYORIA. No sirve tomar la primera aparicion:
+       si el archivo trae alguna fila con el dia mal capturado, esa fila sola
+       arrastraria a todas las filas sin dia hacia la jornada equivocada. */
+    const votos = new Map<string, Map<number, number>>();
+    for (const p of paradas) {
+      if (!p.dia || !p.fecha) continue;
+      const v = votos.get(p.fecha) ?? new Map<number, number>();
+      v.set(p.dia, (v.get(p.dia) ?? 0) + 1);
+      votos.set(p.fecha, v);
     }
-    avisos.push("Numero de dia deducido a partir de las fechas del archivo.");
+    const fechaADia = new Map<string, number>();
+    for (const [fecha, v] of votos) {
+      const top = [...v.entries()].sort((a, b) => b[1] - a[1] || a[0] - b[0])[0];
+      fechaADia.set(fecha, top[0]);
+    }
+
+    if (fechaADia.size) {
+      const conocidas = [...fechaADia.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+      let resueltas = 0;
+      let fueraDeRango = 0;
+      for (const p of sinDia) {
+        if (!p.fecha) continue;
+        const exacto = fechaADia.get(p.fecha);
+        if (exacto !== undefined) {
+          p.dia = exacto;
+          resueltas++;
+          continue;
+        }
+        // Fecha que no figura en el plan: se cuelga del dia mas cercano.
+        const cerca = conocidas.reduce((mejor, act) =>
+          Math.abs(Date.parse(act[0]) - Date.parse(p.fecha!)) <
+          Math.abs(Date.parse(mejor[0]) - Date.parse(p.fecha!))
+            ? act
+            : mejor,
+        );
+        p.dia = cerca[1];
+        fueraDeRango++;
+      }
+      if (resueltas) {
+        avisos.push(
+          `${resueltas} fila(s) sin columna de dia: asignadas segun su fecha al dia correspondiente del plan.`,
+        );
+      }
+      if (fueraDeRango) {
+        avisos.push(
+          `${fueraDeRango} fila(s) con una fecha que no aparece en el resto del cronograma. ` +
+            `Revisa si es un error de captura; por ahora se ubicaron en el dia mas cercano.`,
+        );
+      }
+    } else {
+      const fechas = [...new Set(sinDia.map((p) => p.fecha).filter(Boolean))].sort() as string[];
+      for (const p of sinDia) if (p.fecha) p.dia = fechas.indexOf(p.fecha) + 1;
+      avisos.push("El archivo no trae numero de dia: se dedujo ordenando las fechas.");
+    }
+  }
+
+  /* Coherencia dia↔fecha: si un mismo dia aparece con varias fechas, el
+     cronograma tiene un error de captura y las rutas saldrian mezcladas. */
+  const fechasPorDia = new Map<number, Set<string>>();
+  for (const p of paradas) {
+    if (!p.fecha) continue;
+    const s = fechasPorDia.get(p.dia);
+    if (s) s.add(p.fecha);
+    else fechasPorDia.set(p.dia, new Set([p.fecha]));
+  }
+  for (const [dia, fs] of [...fechasPorDia.entries()].sort((a, b) => a[0] - b[0])) {
+    if (fs.size > 1) {
+      avisos.push(`Dia ${dia}: el archivo lo asocia a varias fechas (${[...fs].sort().join(", ")}).`);
+    }
   }
 
   const grupos = [...new Set(paradas.map((p) => p.grupo))].sort((a, b) =>
     a.localeCompare(b, "es", { numeric: true }),
   );
 
+  /* Fecha de cada dia = la mas repetida entre sus paradas, para que una fila
+     mal capturada no cambie la etiqueta de toda la jornada. */
   const mapaDias = new Map<number, { dia: number; fecha: string | null; paradas: number }>();
+  const conteo = new Map<number, Map<string, number>>();
   for (const p of paradas) {
     const e = mapaDias.get(p.dia);
     if (e) e.paradas++;
-    else mapaDias.set(p.dia, { dia: p.dia, fecha: p.fecha, paradas: 1 });
+    else mapaDias.set(p.dia, { dia: p.dia, fecha: null, paradas: 1 });
+    if (!p.fecha) continue;
+    const c = conteo.get(p.dia) ?? new Map<string, number>();
+    c.set(p.fecha, (c.get(p.fecha) ?? 0) + 1);
+    conteo.set(p.dia, c);
+  }
+  for (const [dia, c] of conteo) {
+    const top = [...c.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))[0];
+    const e = mapaDias.get(dia);
+    if (e && top) e.fecha = top[0];
   }
 
   return {

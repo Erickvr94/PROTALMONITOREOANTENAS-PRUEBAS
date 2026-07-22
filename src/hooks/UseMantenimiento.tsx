@@ -5,7 +5,7 @@ import {
   colaLeer,
   mantProvider,
   reiniciarLocal,
-} from "../services/Mantenimiento";
+} from "../services/mantenimiento";
 import type {
   CambioEstado,
   CronogramaItem,
@@ -15,7 +15,7 @@ import type {
   EstadoMantenimiento,
   OrdenTrabajo,
   SemillaEquipo,
-} from "../types/Tiposmantenimiento";
+} from "../types/tiposMantenimiento";
 
 /** Índice para emparejar un dispositivo del mapa con su fila del plan. */
 interface Indice {

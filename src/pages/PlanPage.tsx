@@ -8,7 +8,8 @@ import {
   leerCronograma,
   type ParadaPlan,
   type PlanCargado,
-} from "../services/Plancronograma";
+} from "../services/planCronograma";
+import { CAPAS_BASE, CAPA_POR_DEFECTO, montarCapaBase } from "../services/basemaps";
 import "./PlanPage.css";
 
 /* Misma derivacion de color que el modo mantenimiento, para que un grupo se
@@ -43,26 +44,35 @@ export default function PlanPage() {
   const [diaSel, setDiaSel] = useState<string>("all");
   const [gruposOn, setGruposOn] = useState<Set<string>>(new Set());
   const [numerar, setNumerar] = useState(true);
+  const [verLineas, setVerLineas] = useState(false);
+  const [capaBase, setCapaBase] = useState<string>(CAPA_POR_DEFECTO);
   const [arrastrando, setArrastrando] = useState(false);
 
-  const divRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<L.Map | null>(null);
   const capaRef = useRef<L.LayerGroup | null>(null);
+  const baseRef = useRef<L.TileLayer[]>([]);
+  const [mapaListo, setMapaListo] = useState(false);
 
-  /* ── Mapa base ── */
-  useEffect(() => {
-    if (!divRef.current || mapRef.current) return;
-    const map = L.map(divRef.current, { zoomControl: true }).setView([-2.5, -79.6], 13);
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      maxZoom: 19,
-      attribution: "&copy; OpenStreetMap",
-    }).addTo(map);
+  /* El contenedor del mapa solo se monta despues de cargar el archivo, asi
+     que se inicializa por callback ref: un useEffect con deps [] correria
+     cuando el div todavia no existe y el mapa nunca llegaria a crearse. */
+  const montarMapa = useCallback((node: HTMLDivElement | null) => {
+    if (!node || mapRef.current) return;
+    const map = L.map(node, { zoomControl: true }).setView([-2.5, -79.6], 13);
+    baseRef.current = montarCapaBase(map, CAPA_POR_DEFECTO);
     mapRef.current = map;
-    return () => {
-      map.remove();
-      mapRef.current = null;
-    };
+    // El div acaba de aparecer: Leaflet necesita releer su tamano real.
+    setTimeout(() => map.invalidateSize(), 0);
+    setMapaListo(true);
   }, []);
+
+  useEffect(
+    () => () => {
+      mapRef.current?.remove();
+      mapRef.current = null;
+    },
+    [],
+  );
 
   /* ── Carga del archivo ── */
   const cargar = useCallback(async (archivo: File) => {
@@ -101,6 +111,14 @@ export default function PlanPage() {
     const f = e.dataTransfer.files?.[0];
     if (f) cargar(f);
   };
+
+  /* Cambio de capa base: se retira la anterior y se monta la nueva. */
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !mapaListo) return;
+    for (const c of baseRef.current) map.removeLayer(c);
+    baseRef.current = montarCapaBase(map, capaBase);
+  }, [capaBase, mapaListo]);
 
   /* ── Paradas visibles segun filtros ── */
   const visibles = useMemo(() => {
@@ -144,8 +162,8 @@ export default function PlanPage() {
       const color = colorGrupo(r.grupo);
       const pts = r.paradas.map((p) => [p.lat, p.lon] as [number, number]);
 
-      if (pts.length > 1) {
-        L.polyline(pts, { color, weight: 3, opacity: 0.7, dashArray: "8 6" }).addTo(capa);
+      if (verLineas && pts.length > 1) {
+        L.polyline(pts, { color, weight: 3, opacity: 0.75, dashArray: "8 6" }).addTo(capa);
       }
 
       r.paradas.forEach((p, i) => {
@@ -176,8 +194,8 @@ export default function PlanPage() {
           .addTo(capa);
       });
 
-      // Marca de arranque de cada ruta.
-      if (pts.length) {
+      // Marca de arranque: solo aporta cuando la ruta esta dibujada.
+      if (verLineas && pts.length) {
         L.circleMarker(pts[0], {
           radius: 9,
           color: "#fff",
@@ -195,7 +213,7 @@ export default function PlanPage() {
 
     const bounds = L.latLngBounds(visibles.map((p) => [p.lat, p.lon] as [number, number]));
     if (bounds.isValid()) map.fitBounds(bounds, { padding: [40, 40] });
-  }, [visibles, rutas, numerar]);
+  }, [visibles, rutas, numerar, verLineas, mapaListo]);
 
   const alternarGrupo = (g: string) => {
     setGruposOn((prev) => {
@@ -292,6 +310,28 @@ export default function PlanPage() {
               Numerar paradas
             </label>
 
+            <label className="plan-check">
+              <input
+                type="checkbox"
+                checked={verLineas}
+                onChange={(e) => setVerLineas(e.target.checked)}
+              />
+              Lineas de ruta
+            </label>
+
+            <select
+              className="plan-sel"
+              value={capaBase}
+              onChange={(e) => setCapaBase(e.target.value)}
+              title="Capa base del mapa"
+            >
+              {CAPAS_BASE.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.etiqueta}
+                </option>
+              ))}
+            </select>
+
             <span className="plan-stats">
               {visibles.length} equipos · {rutas.length} rutas · {kmTotal.toFixed(1)} km
             </span>
@@ -309,7 +349,7 @@ export default function PlanPage() {
           )}
 
           <div className="plan-cuerpo">
-            <div ref={divRef} className="plan-mapa" />
+            <div ref={montarMapa} className="plan-mapa" />
 
             <aside className="plan-lista">
               <div className="plan-lista-h">Jornadas</div>

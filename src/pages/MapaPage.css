@@ -103,7 +103,7 @@
 /* ── Popup ── */
 .mp-pop { font-size: 13px; min-width: 200px; color: #111; }
 .mp-pop .pn { font-weight: 800; margin-bottom: 6px; font-size: 14px; }
-.mp-pop .pr { display: flex; justify-content: space-between; gap: 10px; margin: 3px 0; }
+.mp-pop .pr { display: flex; justify-content: space-between; gap: 10px; margin: 3px 0; padding: 2px 8px 0px 8px; }
 .mp-pop .pk { opacity: .6; }
 .mp-pop .pv { font-weight: 600; text-align: right; }
 .mp-pop-error { margin-top: 6px; color: #991b1b; font-size: 12px; }
