@@ -307,3 +307,6 @@ export function reiniciarLocal(finca: string): void {
     localStorage.removeItem(k);
   }
 }
+
+import { supabaseProvider } from "./mantenimientoprovidersupabase";
+export const mantProvider: MantenimientoProvider = supabaseProvider;

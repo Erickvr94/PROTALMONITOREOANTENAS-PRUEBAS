@@ -126,7 +126,7 @@ export function useMantenimiento(fincaKey: string | null): UseMantenimiento {
         plan,
         ejecucion,
         orden,
-        grupo: orden?.grupo ?? plan?.grupoPlan ?? "—",
+        grupo: plan?.grupoPlan || orden?.grupo || "—",
         estado: ejecucion?.estado ?? "Pendiente",
         fechaTrabajo: ejecucion?.fechaTrabajo ?? null,
       };
@@ -196,7 +196,7 @@ export function useMantenimiento(fincaKey: string | null): UseMantenimiento {
 
   const grupos = useMemo(() => {
     const s = new Set<string>();
-    for (const o of datos?.ordenes ?? []) s.add(o.grupo);
+    for (const o of datos?.ordenes ?? []) if (o.grupo) s.add(o.grupo);
     for (const p of datos?.plan ?? []) if (p.grupoPlan) s.add(p.grupoPlan);
     return [...s].sort((a, b) => a.localeCompare(b, "es", { numeric: true }));
   }, [datos]);
