@@ -53,16 +53,16 @@ export interface OrdenTrabajo {
 
 /** Avance real de un equipo dentro de una orden. */
 export interface Ejecucion {
-  /** Clave: `${ordenId}:${equipoId}`. */
   id: string;
   ordenId: string;
   equipoId: string;
   estado: EstadoMant;
-  /** Día efectivamente trabajado, YYYY-MM-DD. Base del filtro por día. */
   fechaTrabajo: string;
   observaciones: string;
   ejecutadoPor: string | null;
   actualizadoEn: string;
+  /** Detalle por área intervenida. Solo lo llena el proveedor de Supabase. */
+  avances?: import("../services/mantenimientodatabase").AvanceVista[];
 }
 
 /** Todo lo que el proveedor entrega al mapa de una sola vez. */

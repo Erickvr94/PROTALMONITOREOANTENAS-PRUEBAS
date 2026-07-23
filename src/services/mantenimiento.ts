@@ -274,16 +274,6 @@ export const localProvider: MantenimientoProvider = {
 
 const PROVIDER_ID = import.meta.env.VITE_MANT_PROVIDER ?? "local";
 
-export const mantProvider: MantenimientoProvider =
-  PROVIDER_ID === "supabase"
-    ? // TODO: sustituir por supabaseProvider al conectar Supabase
-      localProvider
-    : localProvider;
-
-/* ── Cola offline ─────────────────────────────────────────────────────────
-   Sin uso real con el proveedor local, pero armada para que los avances de
-   campo sin señal no se pierdan al pasar a Supabase.                       */
-
 export function colaLeer(finca: string): CambioEstado[] {
   return leerLS<CambioEstado[]>(kCola(finca), []);
 }
