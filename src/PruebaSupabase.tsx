@@ -11,14 +11,14 @@
    ───────────────────────────────────────────────────────────────────────── */
 
 import { useEffect, useMemo, useState } from "react";
-import { supabase } from "../conexionbasedatos";
+import { supabase } from "./conexionbasedatos";
 import {
   cargarMantenimientoFinca,
   COLOR_ESTADO,
   fechaCorta,
   type DatosMantenimiento,
   type UbicacionMant,
-} from "../services/mantenimientodatabase";
+} from "./services/mantenimientodatabase";
 
 interface FincaOpt {
   id: string;

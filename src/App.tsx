@@ -10,16 +10,11 @@ import TendenciasPage from "./pages/TendenciasPage";
 import EmpresaPage from "./pages/EmpresaPage";
 import MapaPage from "./pages/MapaPage";
 import PlanPage from "./pages/PlanPage";
-import { PruebaSupabase } from './components/PruebaSupabase'
+import  PruebaMantenimiento  from './PruebaSupabase'
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        return (
-        <div>
-          <PruebaSupabase />
-        </div>
-      )
         <Routes>
           <Route path="/login" element={<LoginPage />} />
 
@@ -32,6 +27,7 @@ function App() {
             }
           >
             <Route index element={<DashboardHome />} />
+            <Route path="prueba-mant" element={<PruebaMantenimiento />} />
             <Route path=":empresaId" element={<EmpresaPage />} />
             <Route path=":empresaId/:fincaId/realtime" element={<RealtimePage />} />
             <Route path=":empresaId/:fincaId/mapa" element={<MapaPage />} />
