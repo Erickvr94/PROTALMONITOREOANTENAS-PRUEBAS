@@ -360,15 +360,16 @@ export function resolverUbicacion(
   const candidatos = [ubicacion ? limpiar(ubicacion) : null, limpiar(nombre)].filter(
     Boolean,
   ) as string[];
+// Fallback: ignora un prefijo corto de finca ("VAN_PS06" → "PS06") y viceversa.
   for (const c of candidatos) {
-    const clave = datos.indice.get(c);
-    if (clave) return datos.ubicaciones.get(clave) ?? null;
-  }
-  // Último recurso: la raíz del nombre del marcador.
-  for (const c of candidatos) {
-    const r = raizDe(c);
-    const clave = r ? datos.indice.get(r) : null;
-    if (clave) return datos.ubicaciones.get(clave) ?? null;
+    const sinPrefijo = c.replace(/^[A-Z]{2,4}_/, "");
+    if (sinPrefijo !== c) {
+      const k = datos.indice.get(sinPrefijo);
+      if (k) return datos.ubicaciones.get(k) ?? null;
+    }
+    for (const [alias, clave] of datos.indice) {
+      if (alias.replace(/^[A-Z]{2,4}_/, "") === c) return datos.ubicaciones.get(clave) ?? null;
+    }
   }
   return null;
 }
