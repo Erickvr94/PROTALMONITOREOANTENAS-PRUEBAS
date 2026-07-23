@@ -298,5 +298,5 @@ export function reiniciarLocal(finca: string): void {
   }
 }
 
-import { supabaseProvider } from "./mantenimientoprovidersupabase";
+import { supabaseProvider } from "./mantenimientoProviderSupabase";
 export const mantProvider: MantenimientoProvider = supabaseProvider;
