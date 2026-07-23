@@ -243,3 +243,19 @@
   margin-bottom: 6px; padding: 3px 6px;
   background: rgba(37,99,235,.10); border-radius: 5px;
 }
+/* Detalle de avances en el popup (modo mantenimiento, solo lectura).
+   Un bloque por area intervenida: PLC, Telecomunicaciones, HMI... */
+.mp-av {
+  border-top: 1px solid rgba(255, 255, 255, .08);
+  padding: 6px 0 4px;
+}
+.mp-av:first-of-type { margin-top: 4px; }
+.mp-av-top {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 2px;
+}
+.mp-av .pk { font-size: 11px; }
+.mp-av .pv-wrap { display: block; margin-top: 2px; }

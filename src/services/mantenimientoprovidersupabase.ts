@@ -17,6 +17,7 @@ import { supabase } from "../conexionbasedatos";
 import {
   cargarMantenimientoFinca,
   limpiar,
+  resolverTablero,
   resolverUbicacion,
   type AvanceVista,
   type DatosMantenimiento,
@@ -99,43 +100,48 @@ function construir(
   let emparejados = 0;
 
   semilla.forEach((s, i) => {
+    // El marcador se empareja con SU tablero (PLC, antena, HMI, Raspberry).
+    // La ubicación solo aporta contexto para el popup, no decide el color.
+    const t = resolverTablero(datos, s.nombre, s.ubicacion);
     const u = resolverUbicacion(datos, s.nombre, s.ubicacion);
-    if (u) emparejados++;
+    if (t) emparejados++;
 
     // El grupo del equipo sale de sus propios avances, no de la orden:
     // una orden puede tener varios grupos trabajando en sitios distintos.
-    const grupoEquipo = u?.grupos[0] ?? "";
+    const grupoEquipo = t?.grupos[0] ?? "";
 
     plan.push({
       id: s.id,
       nombre: s.nombre,
-      tag: u?.nombre ?? null,
+      tag: t?.tablero.nombre ?? u?.nombre ?? null,
       grupoPlan: grupoEquipo,
       diaPlan: 0,
       fechaPlan: "",
       orden: i,
-      ubicacion: s.ubicacion,
+      ubicacion: t?.tablero.ubicacion ?? s.ubicacion,
       lat: s.lat,
       lon: s.lon,
-      mantenimiento: tipoMantDe(u?.avances ?? []),
+      mantenimiento: tipoMantDe(t?.avances ?? []),
     });
 
-    if (!u || u.avances.length === 0) return; // sin avances: el mapa lo deja neutro
+    // Sin avances EN ESTE tablero: el marcador conserva su color de señal,
+    // aunque otro equipo de la misma ubicación sí haya sido intervenido.
+    if (!t || t.avances.length === 0) return;
 
-    const ultimo = u.avances[0]; // ya vienen ordenados, el más reciente primero
+    const ultimo = t.avances[0]; // ya vienen ordenados, el más reciente primero
     ejecuciones.push({
       id: `${ultimo.ordenId}:${s.id}`,
       ordenId: ultimo.ordenId,
       equipoId: s.id,
-      estado: u.estado, // consolidado de TODOS los avances de la ubicación
+      estado: t.estado, // consolidado de los avances de ESTE tablero
       fechaTrabajo: ultimo.fecha.slice(0, 10),
-      observaciones: u.avances
+      observaciones: t.avances
         .map((a) => `${a.area}: ${a.observaciones || "sin observaciones"}`)
         .join(" · "),
       ejecutadoPor: ultimo.tecnico,
       actualizadoEn: ultimo.fecha,
       // Detalle completo para el popup: un renglón por área intervenida.
-      avances: u.avances,
+      avances: t.avances,
     });
   });
 
@@ -153,14 +159,16 @@ function construir(
   }));
 
   console.info(
-    `[mantSupabase] ${semilla.length} equipos del mapa · ${emparejados} emparejados ` +
-      `con Supabase · ${ejecuciones.length} con avances · ${datos.ubicaciones.size} ubicaciones en BD`,
+    `[mantSupabase] ${semilla.length} marcadores en el mapa · ${emparejados} emparejados ` +
+      `con un tablero de Supabase · ${ejecuciones.length} marcadores con avances propios · ` +
+      `${datos.diagnostico.tablerosIntervenidos} tableros intervenidos en BD · ` +
+      `${datos.diagnostico.avances} avances`,
   );
   if (emparejados === 0 && semilla.length) {
     console.warn(
       "[mantSupabase] Ningún equipo emparejó. Compara estas claves:",
-      "\n  mapa:", semilla.slice(0, 5).map((s) => limpiar(s.ubicacion ?? s.nombre)),
-      "\n  Supabase:", [...datos.ubicaciones.keys()].slice(0, 5),
+      "\n  mapa:", semilla.slice(0, 8).map((s) => limpiar(s.nombre)),
+      "\n  Supabase:", [...datos.tableros.values()].slice(0, 8).map((t) => t.clave),
     );
   }
 

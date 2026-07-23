@@ -127,35 +127,38 @@ function pill(a: Antena): [string, string] {
   }
 }
 
-/** Bloque de mantenimiento del popup: plan + orden + ejecucion. */
-function popupMantHtml(
-  eq: EquipoMant | null,
-  editable: boolean,
-  ordenActiva: { id: string; numero: string; grupo: string } | null,
-): string {
-  if (!eq) {
-    return editable
-      ? `<div class="mp-crono mp-crono-vacio">Equipo sin fila en el plan de mantenimiento</div>`
-      : "";
-  }
+/** Bloque de mantenimiento del popup. Solo lectura: refleja Supabase, no edita. */
+function popupMantHtml(eq: EquipoMant | null): string {
+  if (!eq) return "";
+
   const gc = colorGrupo(eq.grupo);
   const ec = COLOR_ESTADO_MANT[eq.estado];
-  const id = eq.plan?.id ?? "";
+  const fmt = (iso: string) =>
+    new Date(iso).toLocaleString("es-EC", {
+      timeZone: "America/Guayaquil",
+      dateStyle: "short",
+      timeStyle: "short",
+    });
 
-  const editor = !editable
-    ? ""
-    : ordenActiva
-      ? `
-      <div class="mp-crono-edit">
-        <div class="mp-ot">Registrando en <b>${esc(ordenActiva.numero)}</b> · Grupo ${esc(ordenActiva.grupo)}</div>
-        <input class="mp-obs" data-mant-obs="${esc(id)}" placeholder="Observacion (opcional)"
-               value="${esc(eq.ejecucion?.observaciones ?? "")}" />
-        <div class="mp-crono-btns">
-          <button class="gb gb-proc" data-mant-action="En Proceso" data-mant-id="${esc(id)}">En Proceso</button>
-          <button class="gb gb-fin"  data-mant-action="Terminado"  data-mant-id="${esc(id)}">Terminado</button>
-        </div>
-      </div>`
-      : `<div class="mp-crono-edit mp-crono-vacio">Selecciona una orden activa en la barra para poder marcar avances</div>`;
+  const avances = eq.ejecucion?.avances ?? [];
+
+  const detalle = avances.length
+    ? avances
+        .map((a) => {
+          const c = COLOR_ESTADO_MANT[a.estado];
+          return `
+        <div class="mp-av">
+          <div class="mp-av-top">
+            <span class="pill" style="background:${c}22;color:${c}">${esc(a.estado)}</span>
+            <span class="pv">${esc(a.area)}</span>
+            <span class="pk">${esc(a.mantenimiento)}</span>
+          </div>
+          <div class="pk">${esc(fmt(a.fecha))} · Grupo ${esc(a.grupo)} · OT ${a.ordenNumero} · ${esc(a.tecnico)}</div>
+          ${a.observaciones ? `<div class="pv pv-wrap">${esc(a.observaciones)}</div>` : ""}
+        </div>`;
+        })
+        .join("")
+    : `<div class="mp-crono-vacio">Sin avances registrados</div>`;
 
   return `
     <div class="mp-crono">
@@ -163,13 +166,9 @@ function popupMantHtml(
         <span class="pill" style="background:${gc}22;color:${gc}">${esc(eq.grupo)}</span></div>
       <div class="pr"><span class="pk">Estado</span>
         <span class="pill" style="background:${ec}22;color:${ec}">${esc(eq.estado)}</span></div>
-      ${eq.fechaTrabajo ? `<div class="pr"><span class="pk">Dia trabajado</span><span class="pv">${esc(eq.fechaTrabajo)}</span></div>` : ""}
       ${eq.orden ? `<div class="pr"><span class="pk">Orden</span><span class="pv">${esc(eq.orden.numero)}</span></div>` : ""}
-      ${eq.plan ? `<div class="pr"><span class="pk">Planificado</span><span class="pv">Dia ${eq.plan.diaPlan} · ${esc(eq.plan.fechaPlan)}</span></div>` : ""}
-      ${eq.plan?.mantenimiento ? `<div class="pr"><span class="pk">Tipo</span><span class="pv">${esc(eq.plan.mantenimiento)}</span></div>` : ""}
-      ${eq.ejecucion?.observaciones ? `<div class="pr"><span class="pk">Obs.</span><span class="pv pv-wrap">${esc(eq.ejecucion.observaciones)}</span></div>` : ""}
-      ${eq.ejecucion ? `<div class="pr"><span class="pk">Ult. edicion</span><span class="pv">${esc(eq.ejecucion.actualizadoEn)}</span></div>` : ""}
-      ${editor}
+      ${avances.length > 1 ? `<div class="pr"><span class="pk">Intervenciones</span><span class="pv">${avances.length}</span></div>` : ""}
+      ${detalle}
     </div>`;
 }
 
@@ -421,7 +420,7 @@ export default function MapaPage() {
       const eq = enMant ? mantRef.current.ver(a.id, a.nombre) : null;
       mk.setIcon(enMant ? iconoMant(eq, torre) : iconoDe(a, torre));
       mk.setPopupContent(
-        popupHtml(a, torre, popupMantHtml(eq, enMant, ordenActivaRef.current)),
+        popupHtml(a, torre, popupMantHtml(eq)),
       );
     },
     [modo],

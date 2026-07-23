@@ -106,6 +106,15 @@ export function raizDe(clave: string): string | null {
   return r.length >= 3 && r !== clave ? r : null;
 }
 
+/** Formas alternativas de una misma clave, para emparejar en ambos sentidos:
+    el mapa dice "VAN_PS01_2" y la base dice "PS01_2", o al revés. */
+export function variantes(clave: string): string[] {
+  const v = new Set<string>([clave]);
+  const sinPrefijo = clave.replace(/^[A-Z]{2,4}_/, "");
+  if (sinPrefijo && sinPrefijo !== clave) v.add(sinPrefijo);
+  return [...v];
+}
+
 /* ── Modelo consolidado que consume el mapa ───────────────────────────── */
 
 export interface AvanceVista {
@@ -142,12 +151,29 @@ export interface UbicacionMant {
   ultimaFecha: string | null;
 }
 
+/** Un tablero concreto: PLC, antena, HMI o Raspberry, con sus avances. */
+export interface TableroMant {
+  tablero: TableroDB;
+  /** Clave normalizada del NOMBRE del tablero. */
+  clave: string;
+  /** Clave de la ubicación a la que pertenece. */
+  claveUbicacion: string;
+  avances: AvanceVista[];
+  estado: EstadoMant;
+  grupos: string[];
+  ultimaFecha: string | null;
+}
+
 export interface DatosMantenimiento {
   fincaId: string;
   ordenes: OrdenDB[];
   ubicaciones: Map<string, UbicacionMant>;
   /** Clave de ubicación por cada alias reconocido (nombre, ubicación, raíz). */
   indice: Map<string, string>;
+  /** Cada tablero por su id, con SUS propios avances. Base del color del mapa. */
+  tableros: Map<string, TableroMant>;
+  /** Alias normalizado del nombre de tablero -> id de tablero. */
+  indiceTableros: Map<string, string>;
   /** Para verificar que los joins funcionaron. */
   diagnostico: {
     tableros: number;
@@ -156,6 +182,8 @@ export interface DatosMantenimiento {
     estadosCrudos: string[];
     areasCrudas: string[];
     mantenimientosCrudos: string[];
+    /** Tableros que sí recibieron al menos un avance. */
+    tablerosIntervenidos: number;
   };
   cargadoEn: string;
 }
@@ -249,11 +277,32 @@ export async function cargarMantenimientoFinca(
   const clavePorTablero = new Map<string, string>();
   const raicesPendientes: [string, string][] = [];
 
+  const mapaTableros = new Map<string, TableroMant>();
+  const indiceTableros = new Map<string, string>();
+
   for (const t of tableros) {
     const base = t.ubicacion?.trim() || t.nombre;
     const clave = limpiar(base);
     if (!clave) continue;
     clavePorTablero.set(t.id, clave);
+
+    // Índice por NOMBRE de tablero: es lo que empareja con el marcador del mapa.
+    const claveTablero = limpiar(t.nombre);
+    if (claveTablero) {
+      mapaTableros.set(t.id, {
+        tablero: t,
+        clave: claveTablero,
+        claveUbicacion: clave,
+        avances: [],
+        estado: "Pendiente",
+        grupos: [],
+        ultimaFecha: null,
+      });
+      // El primero gana: si dos tableros comparten nombre exacto, avisamos abajo.
+      for (const v of variantes(claveTablero)) {
+        if (!indiceTableros.has(v)) indiceTableros.set(v, t.id);
+      }
+    }
 
     let u = ubicaciones.get(clave);
     if (!u) {
@@ -306,7 +355,7 @@ export async function cargarMantenimientoFinca(
       : "—";
     if (grupo === "—") avancesSinGrupo++;
 
-    u.avances.push({
+    const vista: AvanceVista = {
       id: a.id,
       ordenId: a.orden_id,
       ordenNumero: numeroPorOrden.get(a.orden_id) ?? 0,
@@ -320,7 +369,12 @@ export async function cargarMantenimientoFinca(
       tableroId: a.tablero_id,
       tableroNombre: tablero?.nombre ?? "—",
       tableroTipo: etiqueta(tablero?.tipo),
-    });
+    };
+
+    // El avance vive en dos sitios: en la ubicación (para leer agrupado en la
+    // tabla) y en SU tablero (que es lo que pinta y cuenta en el mapa).
+    u.avances.push(vista);
+    mapaTableros.get(a.tablero_id)?.avances.push(vista);
   }
 
   /* 7. Consolidar cada ubicación. */
@@ -331,11 +385,24 @@ export async function cargarMantenimientoFinca(
     u.ultimaFecha = u.avances[0]?.fecha ?? null;
   }
 
+  /* 8. Consolidar cada tablero por separado. */
+  let tablerosIntervenidos = 0;
+  for (const t of mapaTableros.values()) {
+    if (!t.avances.length) continue;
+    tablerosIntervenidos++;
+    t.avances.sort((x, y) => y.fecha.localeCompare(x.fecha));
+    t.estado = consolidar(t.avances);
+    t.grupos = [...new Set(t.avances.map((a) => a.grupo).filter((g) => g !== "—"))].sort();
+    t.ultimaFecha = t.avances[0]?.fecha ?? null;
+  }
+
   return {
     fincaId,
     ordenes,
     ubicaciones,
     indice,
+    tableros: mapaTableros,
+    indiceTableros,
     diagnostico: {
       tableros: tableros.length,
       avances: avances.length,
@@ -343,6 +410,7 @@ export async function cargarMantenimientoFinca(
       estadosCrudos: [...estadosCrudos],
       areasCrudas: [...areasCrudas],
       mantenimientosCrudos: [...mantenimientosCrudos],
+      tablerosIntervenidos,
     },
     cargadoEn: new Date().toLocaleString("es-EC", { timeZone: "America/Guayaquil" }),
   };
@@ -369,6 +437,26 @@ export function resolverUbicacion(
     }
     for (const [alias, clave] of datos.indice) {
       if (alias.replace(/^[A-Z]{2,4}_/, "") === c) return datos.ubicaciones.get(clave) ?? null;
+    }
+  }
+  return null;
+}
+
+/** Empareja un marcador del mapa con SU tablero (PLC, antena, HMI, Raspberry).
+    Este es el que decide el color y el conteo: un marcador, un equipo. */
+export function resolverTablero(
+  datos: DatosMantenimiento,
+  nombre: string,
+  ubicacion?: string | null,
+): TableroMant | null {
+  const candidatos = [limpiar(nombre), ubicacion ? limpiar(ubicacion) : null].filter(
+    Boolean,
+  ) as string[];
+
+  for (const c of candidatos) {
+    for (const v of variantes(c)) {
+      const id = datos.indiceTableros.get(v);
+      if (id) return datos.tableros.get(id) ?? null;
     }
   }
   return null;
