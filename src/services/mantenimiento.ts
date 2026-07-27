@@ -272,8 +272,6 @@ export const localProvider: MantenimientoProvider = {
    upsert plano de arriba, la fecha se reescribe en cada edición.
    ───────────────────────────────────────────────────────────────────────── */
 
-const PROVIDER_ID = import.meta.env.VITE_MANT_PROVIDER ?? "local";
-
 export function colaLeer(finca: string): CambioEstado[] {
   return leerLS<CambioEstado[]>(kCola(finca), []);
 }

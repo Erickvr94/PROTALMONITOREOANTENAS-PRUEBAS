@@ -5,7 +5,7 @@ import "leaflet/dist/leaflet.css";
 import { getFinca } from "../config/empresas";
 import { apiFetch } from "../services/api";
 import { useWebSocket, type WsStatus } from "../hooks/useWebSocket";
-import { useMantenimiento } from "../hooks/UseMantenimiento";
+import { useMantenimiento } from "../hooks/useMantenimiento";
 import type { EquipoMant, EstadoMant } from "../types/tiposMantenimiento";
 import "./MapaPage.css";
 
