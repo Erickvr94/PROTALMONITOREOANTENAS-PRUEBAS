@@ -8,7 +8,7 @@ import {
   leerCronograma,
   type ParadaPlan,
   type PlanCargado,
-} from "../services/planCronograma";
+} from "../services/PlanCronograma";
 import { CAPAS_BASE, CAPA_POR_DEFECTO, montarCapaBase } from "../services/basemaps";
 import "./PlanPage.css";
 

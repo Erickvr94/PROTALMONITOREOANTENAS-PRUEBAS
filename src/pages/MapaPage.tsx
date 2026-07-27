@@ -5,7 +5,7 @@ import "leaflet/dist/leaflet.css";
 import { getFinca } from "../config/empresas";
 import { apiFetch } from "../services/api";
 import { useWebSocket, type WsStatus } from "../hooks/useWebSocket";
-import { useMantenimiento } from "../hooks/useMantenimiento";
+import { useMantenimiento } from "../hooks/UseMantenimiento";
 import type { EquipoMant, EstadoMant } from "../types/tiposMantenimiento";
 import "./MapaPage.css";
 
@@ -785,17 +785,6 @@ export default function MapaPage() {
 
           <span className="mant-leg"><span className="dot" style={{ background: COLOR_ESTADO_MANT["En Proceso"] }} /> En proceso</span>
           <span className="mant-leg"><span className="dot" style={{ background: COLOR_ESTADO_MANT.Terminado }} /> Terminado</span>
-
-          <button className="gb" onClick={mant.reiniciar} title="Borra los datos de prueba de este navegador">
-            Reiniciar prueba
-          </button>
-
-          {mant.pendientesEnCola > 0 && (
-            <span className="cola-badge" title="Avances pendientes de enviar">
-              {mant.pendientesEnCola} sin enviar
-            </span>
-          )}
-
           <span className="mant-prog">
             {progreso.map((p) => `${p.grupo}: ${p.hechos}/${p.total}`).join("  ·  ")}
           </span>
