@@ -123,6 +123,14 @@ export default function Sidebar({ isMobileOpen = false, onClose }: SidebarProps)
                                   )}
                                 </NavLink>
                                 <NavLink
+                                  to={`/dashboard/${empresa.id}/${finca.id}/plan`}
+                                  className="nav-link nav-link-sub"
+                                  onClick={onClose}
+                                >
+                                  <span className="nav-icon">&#9998;</span>
+                                  Plan
+                                </NavLink>
+                                <NavLink
                                   to={`/dashboard/${empresa.id}/${finca.id}/historico`}
                                   className="nav-link nav-link-sub"
                                   onClick={onClose}

@@ -9,7 +9,8 @@ import HistoricoPage from "./pages/HistoricoPage";
 import TendenciasPage from "./pages/TendenciasPage";
 import EmpresaPage from "./pages/EmpresaPage";
 import MapaPage from "./pages/MapaPage";
-
+import PlanPage from "./pages/PlanPage";
+import  PruebaMantenimiento  from './PruebaSupabase'
 function App() {
   return (
     <BrowserRouter>
@@ -26,9 +27,11 @@ function App() {
             }
           >
             <Route index element={<DashboardHome />} />
+            <Route path="prueba-mant" element={<PruebaMantenimiento />} />
             <Route path=":empresaId" element={<EmpresaPage />} />
             <Route path=":empresaId/:fincaId/realtime" element={<RealtimePage />} />
             <Route path=":empresaId/:fincaId/mapa" element={<MapaPage />} />
+            <Route path=":empresaId/:fincaId/plan" element={<PlanPage />} />
             <Route path=":empresaId/:fincaId/historico" element={<HistoricoPage />} />
             <Route path=":empresaId/:fincaId/tendencias" element={<TendenciasPage />} />
           </Route>

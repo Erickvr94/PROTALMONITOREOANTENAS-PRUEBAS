@@ -159,14 +159,13 @@ export const EMPRESAS: Empresa[] = [
   },
   {
     id: "grupobrito",
-    name: "Grupo Brito",
+    name: "GrupoBrito",
     fincas: [
       {
         id: "conchero",
         name: "Conchero",
         wsUrl:
-          import.meta.env.VITE_GRUPOBRITO_WS ??
-          "ws://localhost:8080/ws/grupobrito",
+          import.meta.env.VITE_GRUPOBRITO_WS ?? "ws://localhost:8080/ws/grupobrito",
         hasHistorico: true,
         hasTendencias: true,
       },
@@ -174,26 +173,23 @@ export const EMPRESAS: Empresa[] = [
         id: "exporcambrit",
         name: "Exporcambrit",
         wsUrl:
-          import.meta.env.VITE_GRUPOBRITO_WS ??
-          "ws://localhost:8080/ws/grupobrito",
+          import.meta.env.VITE_GRUPOBRITO_WS ?? "ws://localhost:8080/ws/grupobrito",
         hasHistorico: true,
         hasTendencias: true,
       },
       {
         id: "mercycabrera",
-        name: "Mercy Cabrera",
+        name: "MercyCabrera",
         wsUrl:
-          import.meta.env.VITE_GRUPOBRITO_WS ??
-          "ws://localhost:8080/ws/grupobrito",
-        hasHistorico: true,
+          import.meta.env.VITE_GRUPOBRITO_WS ?? "ws://localhost:8080/ws/grupobrito",
+          hasHistorico: true,
         hasTendencias: true,
       },
       {
         id: "vanecubri",
         name: "Vanecubri",
         wsUrl:
-          import.meta.env.VITE_GRUPOBRITO_WS ??
-          "ws://localhost:8080/ws/grupobrito",
+        import.meta.env.VITE_GRUPOBRITO_WS ?? "ws://localhost:8080/ws/grupobrito",
         hasHistorico: true,
         hasTendencias: true,
       },
